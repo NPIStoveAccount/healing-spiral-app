@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Healing Spiral - Interactive Guide</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #0a0a0f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-    #root { min-height: 100vh; }
-  </style>
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Healing Spiral - Interactive Guide</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 </head>
-<body>
-  <div id="root"></div>
-  <script>
-const { useState, useMemo } = React;
-
+<body style="margin:0;padding:0;background:#0a0a0f;">
+<div id="root"></div>
+<script>
+const { useState, useMemo, useEffect, useRef, useCallback } = React;
 /* ── colour tokens ── */
 const C = {
   bg: "#0a0a0f",
@@ -40,6 +34,8 @@ const C = {
   engL: "#e0c86a",
   shd: "#9a6ab0",
   shdL: "#ba8ad0",
+  ndu: "#4aafb8",
+  nduL: "#6acfd8",
   warn: "#c45a5a",
   warnL: "#e07a7a",
   eff: "#5a9a6a",
@@ -240,6 +236,18 @@ const DIMS = [{
   eff: [mkE("exkink", "Primary — makes conscious the hidden desire in what you claim to not want"), mkE("jung", "Classical shadow tradition; shadow, anima/animus, individuation"), mkE("ifs", "Shadow work through exile access; exiled parts ARE the shadow, Self witnessing is re-owning"), mkE("men", "Confrontation and mirroring surface disowned aspects in peer field"), mkE("step12", "Steps 4-5 moral inventory; amends as facing what was hidden"), mkE("gestalt", "'Be the part you're disowning' — polarities, empty chair, owning projections"), mkE("maha", "Most radical: awareness itself has no shadow because nothing is excluded"), mkE("dzog", "Rigpa includes everything — ultimate non-exclusion"), mkE("plant", "Ayahuasca especially can forcefully surface shadow material")],
   par: [mkE("psychodyn", "Classical projection analysis; slow but genuine"), mkE("circ", "Real-time mirroring reveals blind spots"), mkE("grpther", "Group dynamics surface projections and disowned roles"), mkE("rc", "Discharge sometimes touches forbidden material; format limits depth"), mkE("biocore", "Muscular armoring holds forbidden impulses — releases can surface shadow"), mkE("drama", "Role-play as disowned parts; theatrical distance enables contact"), mkE("art", "Unconscious material surfaces through image"), mkE("fam", "Reveals disowned family roles and inherited shadow"), mkE("holo", "Intense states can crack open defended material"), mkE("adv", "Self-inquiry exposes identification, but can bypass relational shadow"), mkE("music", "Voice work can access forbidden expression"), mkE("rhythms", "Free movement reveals disowned impulses"), mkE("forum", "Intense confrontation surfaces shadow — manufactured context"), mkE("hypno", "Regression can surface repressed material; therapist-guided not self-discovered"), mkE("sweat", "Ordeal strips defenses, reveals what's underneath"), mkE("vision", "Solo wilderness confronts what's usually avoided"), mkE("ket", "Can surface shadow material — dissociative access, not re-owning")],
   ineff: [mkI("talk", "Conversation reinforces the narrator — shadow stays hidden behind story"), mkI("cbt", "Works within conscious frame; cannot access what's excluded from awareness"), mkI("se", "Somatic tracking of what's present; not designed for what's actively excluded"), mkI("emdr", "Reprocesses memories, not split-off identity structures"), mkI("nfb", "No mechanism for accessing disowned material"), mkI("dbt", "Skill-building within existing self-concept"), mkI("act", "Acceptance of experience as-is; doesn't address active exclusion"), mkI("nlp", "Reframes within existing narrative; shadow remains projected"), mkI("nvc", "Communication framework — doesn't address what's disowned"), mkI("tre", "Releases tension but not split-off psychological material"), mkI("float", "Sensory reduction — no shadow mechanism"), mkI("vns", "Physiological only"), mkI("yoga", "Body practice — doesn't address what's actively excluded from self"), mkI("taichi", "Movement practice — no shadow mechanism"), mkI("massage", "Body relaxation — no shadow access")]
+}, {
+  id: "nondual",
+  name: "Nondual View",
+  plainName: "Awareness Recognizing Itself",
+  zone: "View",
+  color: C.ndu,
+  colorL: C.nduL,
+  short: "The recognition that awareness is not identical to its contents",
+  desc: "The experiential recognition that awareness is not identical to its contents — that the self-structure is a process rather than a fixed entity. According to Mahamudra teachings, this awareness is always already present: it is not created or achieved but unobscured through specific contemplative practice. It functions as a perspective accelerator across all cascade steps, reducing identity-level friction and allowing processing operations to cover more developmental distance per unit of nervous system capacity. Crucially, the cascade also potentiates the view: unresolved trauma, incomplete responses, unmetabolized affect, and unexamined shadow all generate egoic noise that occludes what is always already present. This mutual potentiation is a core architectural claim.",
+  eff: [mkE("maha", "Primary — pointing-out instruction in the Mahamudra lineage directly introduces awareness to itself"), mkE("dzog", "Trekchö: direct recognition of rigpa as always already present. The closest parallel to Mahamudra pointing-out"), mkE("adv", "Self-inquiry: 'Who am I?' traces the I-thought to its source, dissolving identification"), mkE("real", "Judith Blackstone's embodied nondual — unique in recognizing awareness within the body, not by transcending it")],
+  par: [mkE("zen", "Koans and shikantaza approach nondual recognition but through different mechanism — sudden insight rather than pointing-out"), mkE("cenpr", "Contemplative surrender can access nondual states but typically without the technology for stabilization"), mkE("sufi", "Fana (ego annihilation) touches nondual recognition through devotional intensity"), mkE("hrid", "Heart-centered practice can open nondual awareness but primarily through the devotional rather than recognition path"), mkE("vip", "Advanced insight stages (cessation, knowledge of arising and passing) can produce nondual glimpses — but the tradition lacks pointing-out technology for stabilizing them"), mkE("ifs", "'Self energy' gestures toward this awareness — practitioners can access some version of it. But without technology for recognizing and stabilizing nondual awareness, access tends to remain partial and unstable"), mkE("plant", "Can produce powerful nondual experiences — but chemically induced rather than recognized, so they don't stabilize without contemplative infrastructure"), mkE("yoga", "Samadhi states in deep practice. Access without recognition technology tends toward altered states rather than stable view"), mkE("kirtan", "Devotional dissolution of separate self — genuine but typically temporary and state-dependent"), mkE("kundy", "Kundalini awakening can crack open nondual awareness — but uncontrolled and often destabilizing")],
+  ineff: [mkI("talk", "Cognitive framework — cannot produce recognition of awareness"), mkI("cbt", "Works within the thought-stream, not the awareness observing it"), mkI("se", "Somatic tracking keeps attention on contents of awareness, not awareness itself"), mkI("ifs", "Without nondual training, 'Self' remains a concept or partial access, not stable recognition"), mkI("step12", "Surrender to higher power gestures toward it but lacks recognition technology"), mkI("emdr", "Reprocesses content of awareness, not recognition of awareness itself"), mkI("gestalt", "Present-moment contact with experience — not the same as awareness recognizing itself"), mkI("biocore", "Body-based work — operates on contents, not the perspective holding them"), mkI("nlp", "Cognitive repatterning within the egoic frame"), mkI("nfb", "Trains brain states, not recognition of awareness"), mkI("float", "Sensory reduction may increase subtle awareness but doesn't produce nondual recognition"), mkI("exkink", "Works within the identity structure, not beyond it"), mkI("nvc", "Communication framework"), mkI("tre", "Somatic release — no awareness-recognition mechanism"), mkI("dbt", "Skills within the egoic frame"), mkI("act", "Cognitive defusion approaches nondual insight but stops short of recognition")]
 }];
 const CASCADE = ["capacity", "completion", "affect", "diff", "models", "identity"];
 const LOOPS = [{
@@ -307,6 +315,60 @@ const LOOPS = [{
   to: "diff",
   label: "Updated predictions reveal finer distinctions that weren't visible before",
   plain: "As old beliefs change, you can see new differences between past and present"
+},
+// Nondual View ↔ Cascade mutual potentiation
+{
+  from: "nondual",
+  to: "capacity",
+  label: "The view provides a ground of safety not dependent on circumstances, expanding capacity",
+  plain: "Recognizing awareness itself gives a sense of safety that doesn't depend on conditions — this expands how much you can handle"
+}, {
+  from: "nondual",
+  to: "completion",
+  label: "Holding awareness as distinct from activation allows completion with less re-traumatization risk",
+  plain: "When you can see you ARE the awareness, not the body sensations, completions happen with less risk of getting overwhelmed"
+}, {
+  from: "nondual",
+  to: "affect",
+  label: "Emotions contacted without identity-fusion allows deeper and more sustained contact",
+  plain: "Feeling fully without believing 'this is who I am' lets you stay with emotions longer and more completely"
+}, {
+  from: "nondual",
+  to: "diff",
+  label: "The view IS radical differentiation — awareness from content, observer from observed",
+  plain: "This is the most powerful form of telling things apart — seeing that you are the awareness, not what appears in it"
+}, {
+  from: "nondual",
+  to: "models",
+  label: "Disconfirming evidence lands more completely when identity is held lightly",
+  plain: "When you hold your sense of self more lightly, new experiences can actually change old beliefs instead of bouncing off"
+}, {
+  from: "nondual",
+  to: "identity",
+  label: "Identity structures dissolve more fully with felt contact with what exists beyond them",
+  plain: "Identity can soften more deeply when there's a felt sense of what you are beyond any identity"
+},
+// Cascade → Nondual (clearing what occludes the view)
+{
+  from: "completion",
+  to: "nondual",
+  label: "Somatic completion reduces body-level noise that occludes the view",
+  plain: "As the body finishes its stuck reactions, there's less noise blocking your access to clear awareness"
+}, {
+  from: "affect",
+  to: "nondual",
+  label: "Metabolized affect reduces emotional reactivity that destabilizes recognition",
+  plain: "Processing buried emotions means less reactivity pulling you out of clear seeing"
+}, {
+  from: "shadow",
+  to: "nondual",
+  label: "Reclaimed shadow material reduces the identity-grip that occludes awareness",
+  plain: "Welcoming back rejected parts reduces the defensive structure that blocks awareness from seeing itself"
+}, {
+  from: "identity",
+  to: "nondual",
+  label: "Identity loosening directly reduces what awareness must see through",
+  plain: "As identity softens, there's less structure between awareness and itself"
 }];
 const TRAPS = [{
   name: "Understanding Without Embodiment",
@@ -365,7 +427,8 @@ const ZONE_C = {
   Psyche: C.psy,
   "Identity / Existential": C.idn,
   "Subtle Body": C.eng,
-  Wholeness: C.shd
+  Wholeness: C.shd,
+  View: C.ndu
 };
 
 /* ── Diagnostic / Compass data ── */
@@ -425,6 +488,13 @@ const COMPASS = {
     stuck: "Your work is genuine but it circles around certain territories. You heal the acceptable wounds and leave the forbidden ones untouched. You've become more compassionate but never contacted your cruelty. More vulnerable but never owned your power. More spiritual but never faced your hunger.",
     invite: "Shadow work isn't about becoming your worst fear — it's about ending the war against parts of yourself. What you banish doesn't disappear; it runs your life from the basement. Welcoming it home doesn't make you dangerous. It makes you whole.",
     keys: ["Strong reactions to qualities in others that you can't see in yourself", "'I'm not an angry person' with visible tension", "Healing that avoids sexuality, power, aggression, or selfishness", "Others consistently see things in you that you can't recognize"]
+  },
+  nondual: {
+    q: "Can I find the awareness that is already here, independent of what it contains?",
+    body: "Right now, notice that you are aware. Not what you're aware of — the thoughts, the sensations, the reading — but the awareness itself. Can you find it? Can you rest in it, even for a moment, without needing to go toward or away from anything?",
+    stuck: "You've done genuine cascade work — real body completion, real emotional processing, real model updating — and yet progress feels asymptotically limited. Each round of the spiral covers less new ground. Something about the way you're holding the whole process is creating friction, but you can't see what it is because you're looking from inside the structure that's causing it.",
+    invite: "The nondual view isn't a belief or a philosophy — it's a perceptual recognition. Awareness recognizing itself. It's always already present; you don't need to create it. What's needed is a qualified teacher (Mahamudra, Dzogchen, or similar tradition) who can point it out — directly introduce you to the nature of your own awareness. A single retreat with the right teacher can dramatically change the efficiency of everything else you're doing.",
+    keys: ["Genuine cascade progress that feels asymptotically limited", "Diminishing returns from practices that previously produced change", "Sense that something about the perspective itself is limiting", "Meditation practice that builds calm or insight but not recognition of awareness itself"]
   }
 };
 
@@ -440,6 +510,7 @@ const PLAIN = {
   "identity.short": "Allowing old versions of 'who I am' to shift and change",
   "energetic.short": "Working with subtle body sensations that don't fit neatly into emotions or thoughts",
   "shadow.short": "Reclaiming the parts of yourself you've rejected or hidden away",
+  "nondual.short": "Recognizing the awareness that's always here, underneath all experience",
   // Dimension full descriptions
   "ground.desc": "Healing doesn't happen in isolation — it happens in connection. The quality of the relationship you're in during the work (with a therapist, a group, a partner, even yourself) determines whether real change happens or you're just going through the motions.",
   "capacity.desc": "Before you can safely explore painful material, your nervous system needs to be able to handle it. This means learning to calm yourself down, having people you feel safe with, and being able to move between feeling activated and feeling settled. This isn't a one-time thing — you need more capacity as you go deeper.",
@@ -450,18 +521,24 @@ const PLAIN = {
   "identity.desc": "As enough old beliefs update, the sense of self they held together starts to shift. 'The strong one,' 'the wounded one,' 'the caretaker' — these identities start feeling less solid. This can't be rushed. It happens naturally when enough has shifted underneath. Trying to force it leads to pretending rather than real change.",
   "energetic.desc": "Sometimes there are shifts happening in the body that are subtler than muscle tension but more physical than emotions or thoughts. Different traditions call these energy, qi, prana, or describe channels and centers in the body. This dimension has its own timing and sometimes moves independently of the other work.",
   "shadow.desc": "The other dimensions deal with things that are stuck. This one deals with things you've actively pushed away — parts of yourself you've decided are unacceptable. The mechanism isn't releasing or processing but welcoming back what was rejected. At every level of healing, there are things that were forbidden, not just unfelt. Full healing means going to exactly those places.",
+  "nondual.desc": "There's an awareness that's always here — not something you need to build, but something that can be recognized. Most meditation builds useful skills (calm, focus, present-moment attention) but doesn't produce this specific recognition. It requires 'pointing out' — a qualified teacher directly introducing you to the nature of your own awareness. When stabilized, this view reduces friction at every step of the healing process: body completions happen more easily, emotions can be felt more fully, beliefs update more readily, and identity can soften more deeply. The cascade also helps the view: as trauma, frozen emotions, and shadow material are cleared, what was blocking this awareness from seeing itself is removed. Working both tracks simultaneously — personal healing and nondual recognition — produces outcomes neither can achieve alone.",
   // Theory tab
   "theory.trauma.1": "When something overwhelming happens, your mind and body do smart things to survive — you might freeze, shut down, people-please, or disconnect. The problem is that those survival strategies keep running even when you're safe now. They live in your body as tension and bracing, in your mind as beliefs like 'people can't be trusted,' and in your sense of self as rigid stories about who you are.",
   "theory.trauma.2": "Healing means making contact with what you couldn't handle at the time, and letting it finally be processed. You're not broken — something got interrupted, and it needs to be completed.",
-  "theory.dims": "Rather than a step-by-step process, healing works across nine different areas. Seven build on each other in a natural direction — body before meaning, ground before depth — but they're in constant conversation with each other. The direction is real, but the process is a dialogue, not a staircase. Two more areas weave through everything. Each has different tools that work best, and different ways of getting stuck.",
+  "theory.dims": "Rather than a step-by-step process, healing works across ten different areas. Seven build on each other in a natural direction — body before meaning, ground before depth — but they're in constant conversation with each other. The direction is real, but the process is a dialogue, not a staircase. Three more areas weave through everything. Each has different tools that work best, and different ways of getting stuck.",
   "theory.spiral.1": "There's a natural direction — you need to feel safe enough before going deep, body work comes before deep emotional work, feeling before insight — but the areas are in constant conversation. Body releases bring up buried emotions, and feeling buried emotions can unlock body patterns. It's a conversation between the areas, not a staircase through them. Each time around, you go deeper as new material becomes available from a more stable foundation.",
   "theory.spiral.2": "These areas aren't really separate — a body sensation IS an emotion IS a belief IS a relationship pattern, all at once. It matters less where you start than how fully you show up.",
   "theory.modality.1": "Every healing approach is good at some things and limited at others. Body-based work is great at releasing physical tension but doesn't directly change your beliefs about relationships. Meditation develops deep awareness but can leave relationship patterns untouched. Talking helps you understand patterns but rarely releases a physical survival response.",
-  "theory.modality.2": "This tool maps over 50 different approaches across all nine areas, showing what each one is good at and what it misses. The goal isn't to try everything — it's to see clearly what your current practice covers and where the gaps are.",
+  "theory.modality.2": "This tool maps over 50 different approaches across all ten areas, showing what each one is good at and what it misses. The goal isn't to try everything — it's to see clearly what your current practice covers and where the gaps are.",
   "theory.shadow.1": "You can do real healing work in every other area while avoiding the things you've truly rejected about yourself. You can release safe body tensions while the forbidden impulses stay frozen. You can feel acceptable emotions while the scary ones stay locked away.",
   "theory.shadow.2": "Shadow work feels different from other healing — it's not about finishing something that got interrupted, but about welcoming back something that was kicked out. The anger the 'nice person' won't own. The vulnerability the 'strong one' has walled off. The desire the 'spiritual one' has risen above. Wholeness means nothing left out of who you are.",
   // Coherence
   "theory.coherence.1": "Here's the key insight: your system isn't broken. It's organized — just organized around survival. Every body pattern, every relationship prediction, every identity structure fits together with its own logic. The 'strong one' who can't feel vulnerability, the body that won't let go, the belief that closeness is dangerous — these aren't random problems. They're a coherent system of self-protection that made sense when it was built.",
+  // Map intro
+  "theory.map.1": "Personal evolution has a structure. Not a rigid sequence — a living architecture with a natural direction, constant feedback between its parts, and a logic that becomes clear once you know where to look.",
+  "theory.map.2": "This framework maps ten areas that healing works across. Each has its own logic, its own set of practices that work, and its own ways of getting stuck. No single approach covers all of them — which is why someone can do genuine, deep work for years and still feel stuck: they're going deeper in areas that are already relatively strong while the ones that need attention go unworked.",
+  "theory.map.3": "Seeing this structure changes the game. Instead of navigating by feel — trying things, hoping something works, wondering why progress stalls — you can see what your current practice covers, where the gaps are, and what to do about them. The pain may be necessary. The confusion isn't.",
+  "theory.compass.cta": "Want guidance navigating your specific situation? The assessment tool can show you where your gaps are, and if you'd like personal support, you can book a coaching session.",
   "theory.coherence.2": "Healing doesn't make a broken system work. It reorganizes what the system is built around. Instead of being organized around old wounds and survival, you develop a system organized around wholeness — nothing excluded, nothing frozen, nothing split off.",
   // Integrity
   "theory.integrity.1": "Integrity here doesn't mean moral goodness — though that tends to follow — but structural wholeness. Nothing left out of your experience of yourself. A system organized around old wounds keeps itself together by cutting things out: the 'strong one' cuts out vulnerability; the 'spiritual one' cuts out the animal; the 'nice one' cuts out aggression. Everything fits — but at the cost of amputating whole parts of who you are.",
@@ -469,6 +546,15 @@ const PLAIN = {
   "theory.integrity.3": "This is why shadow work isn't optional. Without it, you can build a new version of yourself that's still organized around cutting things out — just a more polished, spiritually sophisticated version of the same pattern. You can meditate your way to calm while your anger stays frozen. You can build a new identity still defined by what it won't include — just harder to spot.",
   // Contradictory Beliefs
   "theory.contradict.1": "Sometimes you carry beliefs that directly contradict each other — not just mixed feelings, but deep structural opposites. 'I must be strong to survive' AND 'I am fundamentally helpless.' 'I must earn love' AND 'real love can't be earned.' 'Connection is what I need most' AND 'connection is what hurts me most.' These aren't just ideas — they live in your nervous system as your body trying to go in two directions at once.",
+  // Nondual View theory
+  "theory.nondual.1": "There's an awareness that's always already here — not something you need to create or earn, but something you can learn to notice. It's the awareness that's reading these words right now, before any reaction or opinion about them.",
+  "theory.nondual.2": "Most meditation practices build useful skills — calm, focus, present-moment attention — but they don't produce this specific recognition. What's needed is a qualified teacher who can point it out directly: 'This, right here, is the nature of your mind.' Traditions like Mahamudra and Dzogchen have refined this technology for centuries. A single retreat with the right teacher can be a turning point.",
+  "theory.nondual.3": "When this recognition stabilizes, everything else gets easier. Body completions happen with less resistance. Emotions can be felt more fully without the fear of being consumed by them. Old beliefs update more readily because you're not gripping your identity so tightly. Not because identity doesn't matter, but because you have felt contact with something beyond it.",
+  // Mutual Potentiation
+  "theory.mutual.1": "The nondual view and personal healing work don't depend on each other — you can make progress with either one alone. But when you work both at the same time, each one amplifies the other.",
+  "theory.mutual.2": "The view makes personal work faster. When you can hold your identity lightly — when there's a felt sense of 'I am more than this story' — then difficult emotions, old beliefs, and stuck body patterns have less to grip onto. They process more efficiently.",
+  "theory.mutual.3": "Personal work makes the view clearer. All the trauma, frozen emotions, and rejected parts of yourself create noise — mental chatter, reactivity, defensive tightening — that blocks you from noticing the awareness that's always here. As you clear those, the view becomes more accessible, more stable, and more present in everyday life rather than just on the cushion.",
+  "theory.mutual.4": "This is why the Healing Spiral recommends working both at the same time, not one after the other. Neither reaches its full potential without the other.",
   "theory.contradict.2": "A single painful belief is at least stable — you can settle into it, even if it hurts. Contradictory beliefs don't allow even that. When two core beliefs pull opposite directions, you're always activated because you can't settle into either one. Over time this creates chronic shame, inability to make decisions, a constant sense of being a fraud, and physical wear: exhaustion, inflammation, sleep problems, and pain that doctors can't explain.",
   "theory.contradict.3": "The way through runs through the same process: build enough stability to hold both truths at once without collapsing. Let the body finish what was interrupted on both sides. Feel what's underneath both poles. See clearly: this was true then, in that specific situation. Discover through new experience that the opposites can coexist — strength and vulnerability in the same moment, in the same body. Shadow work is often essential here, because one side of the contradiction is usually the hidden one.",
   "theory.compass.1": "When healing feels stuck, the most useful question is: what am I avoiding? The area you least want to look at is usually the one you most need. The body worker who never does group work. The meditator who never lets themselves feel. The therapy client who never lets their body move. The ceremony-goer who never does the slow daily work.",
@@ -534,7 +620,16 @@ const PLAIN = {
   "trap.4.antidote": "Join a group. Men's/women's work, 12-step, circling, group therapy. Let yourself be seen imperfectly by people who aren't paid to support you.",
   "trap.5.desc": "Doing genuine deep work while always going around what's been truly rejected.",
   "trap.5.looks": "You've done genuine deep work. Real feeling, real body release, real insight. But there's a zone you don't go near. The kind person who's never faced their cruelty. The vulnerable one who's never owned their power. You don't experience yourself as avoiding anything — you just believe you're not that. That absence of awareness is the defense itself.",
-  "trap.5.antidote": "Go to exactly the places you've organized your life to avoid. Shadow-oriented therapy, honest group feedback. Ask the people closest to you what they see that you don't."
+  "trap.5.antidote": "Go to exactly the places you've organized your life to avoid. Shadow-oriented therapy, honest group feedback. Ask the people closest to you what they see that you don't.",
+  // Nondual compass
+  "nondual.q": "Can you notice the awareness that's already here — not what you're aware of, but awareness itself?",
+  "nondual.body": "Right now, notice that you are aware. Not the thoughts or feelings — the awareness underneath them. Can you rest there, even for a moment?",
+  "nondual.stuck": "You've done real work — body, emotions, beliefs, relationships — and yet progress feels like it's slowing down with each round. Something about the perspective you're looking from is creating friction, but you can't see it because you're inside it.",
+  "nondual.invite": "This isn't something you need to build — it's something that can be pointed out by the right teacher. A weeklong retreat in the Mahamudra or Dzogchen tradition, with a qualified teacher, can change how everything else works. Not a replacement for the other work — an accelerator of it.",
+  "compass.nondual.q": "Can you notice the awareness that's already here — not what you're aware of, but awareness itself?",
+  "compass.nondual.body": "Right now, notice that you are aware. Not the thoughts or feelings — the awareness underneath them. Can you rest there, even for a moment?",
+  "compass.nondual.stuck": "You've done real work — body, emotions, beliefs, relationships — and yet progress feels like it's slowing down with each round. Something about the perspective you're looking from is creating friction, but you can't see it because you're inside it.",
+  "compass.nondual.invite": "This isn't something you need to build — it's something that can be pointed out by the right teacher. A weeklong retreat in the Mahamudra or Dzogchen tradition, with a qualified teacher, can change how everything else works. Not a replacement for the other work — an accelerator of it."
 };
 const LVL_C = {
   strong: C.strong,
@@ -589,6 +684,28 @@ function assess(sel, activeConds) {
     4: 0.3,
     5: -0.5
   };
+
+  // ── Nondual View potentiation ──
+  // Compute nondual coverage first to derive a multiplier for all other dimensions.
+  // The view is a perspective accelerator: it multiplies existing coverage, not replaces it.
+  // strong nondual → 1.25x, moderate → 1.12x, weak → 1.05x, none → 1.0x
+  const nduDim = DIMS.find(d => d.id === "nondual");
+  let nduRaw = 0;
+  if (nduDim) {
+    (nduDim.eff || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      nduRaw += 28 * Math.max(0, mult);
+    });
+    (nduDim.par || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      nduRaw += 10 * Math.max(0, mult);
+    });
+  }
+  const nduScore = Math.min(100, Math.round(nduRaw));
+  const nduLevel = nduScore >= 56 ? "strong" : nduScore >= 28 ? "moderate" : nduScore > 0 ? "weak" : "none";
+  const nduMult = nduLevel === "strong" ? 1.25 : nduLevel === "moderate" ? 1.12 : nduLevel === "weak" ? 1.05 : 1.0;
   const results = DIMS.map(dim => {
     // Dimension importance multiplier from conditions
     const dimImportance = hasConds && condDimW[dim.id] ? 1 + condDimW[dim.id] * 0.15 : 1;
@@ -619,9 +736,13 @@ function assess(sel, activeConds) {
       }
     });
 
-    // Apply dimension importance scaling
-    const score = Math.max(0, Math.min(100, Math.round(rawScore * dimImportance)));
+    // Apply dimension importance scaling + nondual potentiation
+    // Nondual multiplier applies to all dimensions except nondual itself:
+    // the view accelerates existing coverage, it doesn't score itself higher
+    const viewMult = dim.id === "nondual" ? 1.0 : nduMult;
+    const score = Math.max(0, Math.min(100, Math.round(rawScore * dimImportance * viewMult)));
     const level = score >= 56 ? "strong" : score >= 28 ? "moderate" : score > 0 ? "weak" : "none";
+    const potentiated = dim.id !== "nondual" && nduMult > 1.0;
     return {
       dim,
       score,
@@ -629,7 +750,8 @@ function assess(sel, activeConds) {
       eMatch,
       pMatch,
       harmMatch,
-      dimImportance
+      dimImportance,
+      potentiated
     };
   });
   const trapRisks = TRAPS.map(t => {
@@ -1073,7 +1195,8 @@ const CONDITIONS = [{
     diff: 1,
     identity: 1,
     shadow: 1,
-    energetic: 1
+    energetic: 1,
+    nondual: 0
   },
   essential: ["se", "ifs", "eft"],
   recommended: ["emdr", "dbt", "hakomi", "sm"],
@@ -1099,7 +1222,8 @@ const CONDITIONS = [{
     ground: 1,
     identity: 0,
     shadow: 0,
-    energetic: 1
+    energetic: 1,
+    nondual: 0
   },
   essential: ["se", "emdr"],
   recommended: ["sm", "tre", "yoga"],
@@ -1125,7 +1249,8 @@ const CONDITIONS = [{
     shadow: 2,
     identity: 1,
     energetic: 1,
-    diff: 1
+    diff: 1,
+    nondual: 0
   },
   essential: ["biocore", "gestalt", "men"],
   recommended: ["rc", "step12", "rhythms", "yoga", "music"],
@@ -1151,7 +1276,8 @@ const CONDITIONS = [{
     ground: 1,
     energetic: 1,
     shadow: 0,
-    identity: 0
+    identity: 0,
+    nondual: 0
   },
   essential: ["se", "dbt", "yoga"],
   recommended: ["tre", "nfb", "taichi"],
@@ -1177,7 +1303,8 @@ const CONDITIONS = [{
     shadow: 2,
     identity: 1,
     completion: 1,
-    energetic: 0
+    energetic: 0,
+    nondual: 0
   },
   essential: ["eft", "ifs", "grpther"],
   recommended: ["circ", "men", "step12", "psychodyn"],
@@ -1203,7 +1330,8 @@ const CONDITIONS = [{
     completion: 0,
     diff: 0,
     identity: 1,
-    energetic: 0
+    energetic: 0,
+    nondual: 0
   },
   essential: ["step12"],
   recommended: ["dbt", "yoga"],
@@ -1229,7 +1357,8 @@ const CONDITIONS = [{
     completion: 1,
     diff: 1,
     identity: 2,
-    energetic: 0
+    energetic: 0,
+    nondual: 0
   },
   essential: ["step12", "se", "ifs"],
   recommended: ["men", "rc", "yoga", "dbt"],
@@ -1255,7 +1384,8 @@ const CONDITIONS = [{
     models: 1,
     shadow: 2,
     identity: 1,
-    energetic: 1
+    energetic: 1,
+    nondual: 0
   },
   essential: ["se", "ifs", "dbt"],
   recommended: ["sm", "hakomi", "nfb"],
@@ -1281,7 +1411,8 @@ const CONDITIONS = [{
     diff: 1,
     capacity: 1,
     completion: 1,
-    energetic: 0
+    energetic: 0,
+    nondual: 1
   },
   essential: ["ifs", "exkink", "men"],
   recommended: ["step12", "gestalt", "circ", "jung"],
@@ -1307,7 +1438,8 @@ const CONDITIONS = [{
     shadow: 1,
     diff: 1,
     models: 1,
-    energetic: 1
+    energetic: 1,
+    nondual: 0
   },
   essential: ["gestalt", "rc", "music"],
   recommended: ["men", "ifs", "nature", "art"],
@@ -1333,7 +1465,8 @@ const CONDITIONS = [{
     diff: 1,
     ground: 1,
     models: 0,
-    identity: 0
+    identity: 0,
+    nondual: 0
   },
   essential: ["se", "sm", "cranio"],
   recommended: ["yoga", "acu", "feld", "hakomi"],
@@ -1927,6 +2060,7 @@ function HealingSpiralApp() {
   const [exportSent, setExportSent] = useState(false);
   const [openCats, setOpenCats] = useState(new Set(["relational", "body"]));
   const [plain, setPlain] = useState(false);
+  const [thOpen, setThOpen] = useState(new Set());
   const T = (key, fallback) => plain && PLAIN[key] ? PLAIN[key] : fallback;
   const dimShort = dim => T(dim.id + ".short", dim.short);
   const dimDesc = dim => T(dim.id + ".desc", dim.desc);
@@ -2313,7 +2447,7 @@ function HealingSpiralApp() {
       maxWidth: 640,
       margin: 0
     }
-  }, plain ? "Nine areas of healing. 50+ approaches. One spiral process." : "Nine dimensions. 50+ modalities. One spiral process.")))), /*#__PURE__*/React.createElement("div", {
+  }, plain ? "Ten areas of healing. 50+ approaches. One spiral process." : "Ten dimensions. 50+ modalities. One spiral process.")))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: "0.25rem",
@@ -2339,6 +2473,9 @@ function HealingSpiralApp() {
   }, {
     k: "modalities",
     l: plain ? "Approaches" : "Modalities"
+  }, {
+    k: "resources",
+    l: "Retreats/Programs"
   }].map(v => /*#__PURE__*/React.createElement("button", {
     key: v.k,
     onClick: () => {
@@ -2416,383 +2553,541 @@ function HealingSpiralApp() {
       border: `1px solid ${C.bdr}`,
       borderRadius: 10,
       padding: "1.5rem",
-      marginBottom: "1rem"
+      marginBottom: "1.5rem"
     }
   }, /*#__PURE__*/React.createElement("h2", {
     style: {
-      fontSize: "1.15rem",
+      fontSize: "1.25rem",
       fontWeight: 400,
       color: C.txL,
       marginTop: 0,
       marginBottom: "0.75rem"
     }
-  }, "What Is Trauma?"), /*#__PURE__*/React.createElement("p", {
+  }, "The Map"), /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: "0.88rem",
+      fontSize: "0.9rem",
       color: C.txM,
-      lineHeight: 1.75,
+      lineHeight: 1.8,
       margin: 0
     }
-  }, T("theory.trauma.1", "Trauma is unintegrated experience. The organism did something intelligent to survive — froze, fled, fawned, collapsed, dissociated, braced — and that adaptation now runs in contexts where it no longer serves. The body is still bracing against a blow that landed decades ago. The nervous system is still scanning for danger in a room full of friends. The relational prediction — people leave, my needs are too much, closeness means engulfment — still governs every intimate encounter.")), /*#__PURE__*/React.createElement("p", {
+  }, T("theory.map.1", "Personal evolution has a structure. Not a rigid sequence — a living architecture with a natural direction, constant feedback between its parts, and a logic that becomes visible once you know where to look.")), /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: "0.88rem",
+      fontSize: "0.9rem",
       color: C.txM,
-      lineHeight: 1.75,
+      lineHeight: 1.8,
       margin: 0,
       marginTop: "0.75rem"
     }
-  }, T("theory.trauma.2", "This reframing matters because it changes everything about the project of healing. You are not fixing what's broken. You are completing what was interrupted. The survival response was intelligent; it simply never got to finish. The emotion was too much; it simply never got to be felt. The relational wound closed over before it could be cleaned."))), /*#__PURE__*/React.createElement("div", {
+  }, T("theory.map.2", "This framework maps ten dimensions of contact that healing works across. Each has its own logic, its own set of practices that work, and its own ways of getting stuck. No single modality covers all of them — which is why someone can do genuine, deep work for years and still feel stuck: they're going deeper in dimensions that are already relatively strong while the ones that need attention go unworked.")), /*#__PURE__*/React.createElement("p", {
     style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, "Nine ", plain ? "Areas" : "Dimensions", " of ", plain ? "Healing" : "Contact"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
+      fontSize: "0.9rem",
       color: C.txM,
-      lineHeight: 1.75,
+      lineHeight: 1.8,
       margin: 0,
-      marginBottom: "1rem"
+      marginTop: "0.75rem"
     }
-  }, T("theory.dims", "Rather than a step-by-step protocol, healing works across nine dimensions of contact. Seven form a cascade — there is a natural direction of dependency, body before meaning, ground before depth — and two operate orthogonally, weaving through everything. The dimensions are in constant dialogue; the direction is real, but the process is a conversation, not a staircase. Each has its own logic, its own modalities, and its own ways of getting stuck.")), [{
-    color: C.gnd,
-    name: "Relational Field",
-    zone: "Ground",
-    id: "ground"
-  }, {
-    color: C.acc,
-    name: "Capacity Building",
-    zone: "Foundation",
-    id: "capacity"
-  }, {
-    color: C.som,
-    name: "Physiological Completion",
-    zone: "Body",
-    id: "completion"
-  }, {
-    color: C.som,
-    name: "Affect Metabolization",
-    zone: "Body → Psyche",
-    id: "affect"
-  }, {
-    color: C.psy,
-    name: "Differentiation",
-    zone: "Psyche",
-    id: "diff"
-  }, {
-    color: C.psy,
-    name: "Implicit Model Updating",
-    zone: "Psyche",
-    id: "models"
-  }, {
-    color: C.idn,
-    name: "Identity Reorganization",
-    zone: "Identity",
-    id: "identity"
-  }, {
-    color: C.eng,
-    name: "Energetic Reorganization",
-    zone: plain ? "Subtle Body (Cross-cutting)" : "Subtle Body (Orthogonal)",
-    id: "energetic"
-  }, {
-    color: C.shd,
-    name: "Shadow Integration / Integrity",
-    zone: plain ? "Wholeness (Cross-cutting)" : "Wholeness (Orthogonal)",
-    id: "shadow"
-  }].map((d, i) => {
-    const clinicalTexts = {
-      ground: "The medium in which all healing occurs. Quality of presence, attunement, co-regulation, and witnessing determines whether anything else shifts or is merely performed. Developmental trauma happened in relationship; it resolves in relationship.",
-      capacity: "The nervous system needs enough resources to enter difficult territory without overwhelm. Both internal regulation (pendulation between activation and settling) and external safety (relational holding). This isn't a stage you complete — it scales with depth throughout the spiral.",
-      completion: "The body holds incomplete fight, flight, freeze, fawn, and collapse responses. Completion means finishing what was started: hands push, legs run, chest opens. Different from catharsis — genuine completion produces spontaneous settling and a new physiological baseline.",
-      affect: "As the body completes, frozen emotional material surfaces — grief under anger, terror under numbness, longing under self-sufficiency. Metabolization is sustained conscious contact with feeling: not acting it out, not analyzing it, not transcending it. A slow digestive process that comes in waves.",
-      diff: "Past from present. Part from whole self. Feeling from story. Awareness from content. As affect metabolizes, you see: 'this is the child's grief, not my adult reality.' Without somatic and affect work first, differentiation becomes mere intellectual mapping.",
-      models: "The nervous system runs predictions formed under duress: 'people leave,' 'my needs are too much.' These update only when the old prediction is active AND met with disconfirming experience AND you're differentiated enough to notice the mismatch. This is why insight alone doesn't heal — corrective relational experience is the mechanism.",
-      identity: "As enough implicit models update, the identity they supported loses coherence. 'The wounded one,' 'the strong one,' 'the helper' — dissolving. Can't be forced; premature attempts produce spiritual bypass. Two levels: structural loosening (specific identities soften) and, more rarely, dissolution of the identity project itself (questions like 'am I enough?' stop being live questions rather than getting better answers).",
-      energetic: "More granular than muscular tension, more embodied than parts or meaning. Traditional systems map as meridians, chakras, nadis. This dimension operates somewhat independently — sometimes preceding, sometimes following, sometimes catalyzing the cascade. Requires soft, receptive attention. A note on epistemological honesty: eight dimensions of this framework have mechanisms that can be named. This one can only be described phenomenologically. It is included because the experience is real and clinically significant, not because it is as well understood as the others.",
-      shadow: "Other dimensions work with what's stuck. This dimension works with what's split off — actively excluded from self-experience. The mechanism isn't completion or metabolization but re-owning what was banished. Integrity as structural wholeness: nothing left out. At every level of the cascade, there's material that was forbidden rather than merely unfelt. Full integration requires going to exactly the places the system has organized itself to avoid."
-    };
-    return /*#__PURE__*/React.createElement("div", {
-      key: i,
+  }, T("theory.map.3", "Seeing this structure changes the game. Instead of navigating by feel — trying things, hoping something works, wondering why progress stalls — you can see what your current practice covers, where the gaps are, and what to do about them. The pain may be necessary. The confusion isn't.")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "0.82rem",
+      color: C.accL,
+      lineHeight: 1.6,
+      margin: 0,
+      marginTop: "1rem",
+      fontStyle: "italic"
+    }
+  }, "Explore the sections below to understand how the dimensions work together, then use the other tabs to assess your own program and find where you might be stuck."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("a", {
+    href: "https://calendly.com/eli-van",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      display: "inline-block",
+      padding: "0.45rem 1rem",
+      background: "transparent",
+      color: C.idnL,
+      border: `1px solid ${C.idn}44`,
+      borderRadius: 6,
+      textDecoration: "none",
+      fontFamily: "inherit",
+      fontSize: "0.8rem"
+    }
+  }, "Book a Coaching Session"))), [{
+    id: "dims",
+    title: plain ? "The Ten Areas" : "The Ten Dimensions",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
       style: {
-        marginBottom: "0.75rem",
-        paddingLeft: "1rem",
-        borderLeft: `2px solid ${d.color}`
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginBottom: "1.25rem"
       }
-    }, /*#__PURE__*/React.createElement("div", {
+    }, T("theory.dims", "Rather than a step-by-step protocol, healing works across ten dimensions of contact. Seven form a cascade — there is a natural direction of dependency, body before meaning, ground before depth — and three operate orthogonally, weaving through everything. The dimensions are in constant dialogue; the direction is real, but the process is a conversation, not a staircase. Each has its own logic, its own modalities, and its own ways of getting stuck.")), [{
+      color: C.gnd,
+      name: "Relational Field",
+      zone: "Ground",
+      id: "ground"
+    }, {
+      color: C.acc,
+      name: "Capacity Building",
+      zone: "Foundation",
+      id: "capacity"
+    }, {
+      color: C.som,
+      name: "Physiological Completion",
+      zone: "Body",
+      id: "completion"
+    }, {
+      color: C.som,
+      name: "Affect Metabolization",
+      zone: "Body → Psyche",
+      id: "affect"
+    }, {
+      color: C.psy,
+      name: "Differentiation",
+      zone: "Psyche",
+      id: "diff"
+    }, {
+      color: C.psy,
+      name: "Implicit Model Updating",
+      zone: "Psyche",
+      id: "models"
+    }, {
+      color: C.idn,
+      name: "Identity Reorganization",
+      zone: "Identity",
+      id: "identity"
+    }, {
+      color: C.eng,
+      name: "Energetic Reorganization",
+      zone: plain ? "Subtle Body (Cross-cutting)" : "Subtle Body (Orthogonal)",
+      id: "energetic"
+    }, {
+      color: C.shd,
+      name: "Shadow Integration / Integrity",
+      zone: plain ? "Wholeness (Cross-cutting)" : "Wholeness (Orthogonal)",
+      id: "shadow"
+    }, {
+      color: C.ndu,
+      name: "Nondual View",
+      zone: plain ? "View (Cross-cutting)" : "View (Orthogonal)",
+      id: "nondual"
+    }].map((d, i) => {
+      const clinicalTexts = {
+        ground: "The medium in which all healing occurs. Quality of presence, attunement, co-regulation, and witnessing determines whether anything else shifts or is merely performed. Developmental trauma happened in relationship; it resolves in relationship.",
+        capacity: "The nervous system needs enough resources to enter difficult territory without overwhelm. Both internal regulation (pendulation between activation and settling) and external safety (relational holding). This isn't a stage you complete — it scales with depth throughout the spiral.",
+        completion: "The body holds incomplete fight, flight, freeze, fawn, and collapse responses. Completion means finishing what was started: hands push, legs run, chest opens. Different from catharsis — genuine completion produces spontaneous settling and a new physiological baseline.",
+        affect: "As the body completes, frozen emotional material surfaces — grief under anger, terror under numbness, longing under self-sufficiency. Metabolization is sustained conscious contact with feeling: not acting it out, not analyzing it, not transcending it. A slow digestive process that comes in waves.",
+        diff: "Past from present. Part from whole self. Feeling from story. Awareness from content. As affect metabolizes, you see: 'this is the child's grief, not my adult reality.' Without somatic and affect work first, differentiation becomes mere intellectual mapping.",
+        models: "The nervous system runs predictions formed under duress: 'people leave,' 'my needs are too much.' These update only when the old prediction is active AND met with disconfirming experience AND you're differentiated enough to notice the mismatch. This is why insight alone doesn't heal — corrective relational experience is the mechanism.",
+        identity: "As enough implicit models update, the identity they supported loses coherence. 'The wounded one,' 'the strong one,' 'the helper' — dissolving. Can't be forced; premature attempts produce spiritual bypass. Two levels: structural loosening (specific identities soften) and, more rarely, dissolution of the identity project itself (questions like 'am I enough?' stop being live questions rather than getting better answers).",
+        energetic: "More granular than muscular tension, more embodied than parts or meaning. Traditional systems map as meridians, chakras, nadis. This dimension operates somewhat independently — sometimes preceding, sometimes following, sometimes catalyzing the cascade. Requires soft, receptive attention. A note on epistemological honesty: eight dimensions of this framework have mechanisms that can be named. This one can only be described phenomenologically. It is included because the experience is real and clinically significant, not because it is as well understood as the others.",
+        shadow: "Other dimensions work with what's stuck. This dimension works with what's split off — actively excluded from self-experience. The mechanism isn't completion or metabolization but re-owning what was banished. Integrity as structural wholeness: nothing left out. At every level of the cascade, there's material that was forbidden rather than merely unfelt. Full integration requires going to exactly the places the system has organized itself to avoid.",
+        nondual: "The experiential recognition that awareness is not identical to its contents — always already present, not created or achieved but unobscured. Functions as a perspective accelerator across all cascade steps, reducing identity-level friction. Crucially mutual: the cascade also potentiates the view by clearing the trauma, frozen affect, and shadow material that occlude it. Not meditation generically — most practices build useful capacities but do not produce this specific recognition. Requires 'pointing out' instruction from traditions like Mahamudra, Dzogchen, or Advaita. Not required, but progress becomes asymptotically slower without it."
+      };
+      return /*#__PURE__*/React.createElement("div", {
+        key: i,
+        style: {
+          marginBottom: "0.75rem",
+          paddingLeft: "1rem",
+          borderLeft: `2px solid ${d.color}`
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          marginBottom: "0.2rem"
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: "0.9rem",
+          color: C.txL
+        }
+      }, plain ? (DIMS.find(x => x.id === d.id) || {}).plainName || d.name : d.name), /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: "0.6rem",
+          color: d.color,
+          background: `${d.color}18`,
+          padding: "1px 6px",
+          borderRadius: 8,
+          textTransform: "uppercase",
+          letterSpacing: "0.08em"
+        }
+      }, d.zone)), /*#__PURE__*/React.createElement("p", {
+        style: {
+          fontSize: "0.82rem",
+          color: C.txM,
+          lineHeight: 1.65,
+          margin: 0
+        }
+      }, T("theory." + d.id, clinicalTexts[d.id])));
+    }))
+  }, {
+    id: "spiral",
+    title: "The Spiral, Not the Staircase",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
       style: {
-        display: "flex",
-        alignItems: "center",
-        gap: "0.5rem",
-        marginBottom: "0.2rem"
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, T("theory.spiral.1", "There is a natural direction — capacity before depth, body before meaning, feeling before insight — but the dimensions are in constant dialogue. Body completion surfaces frozen emotions, and contacting emotion can spontaneously release body patterns. The process is a conversation between dimensions, not a staircase through them. Each turn revisits all dimensions at greater depth as new material becomes accessible from the new baseline.")), /*#__PURE__*/React.createElement("p", {
       style: {
-        fontSize: "0.9rem",
-        color: C.txL
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
       }
-    }, plain ? (DIMS.find(x => x.id === d.id) || {}).plainName || d.name : d.name), /*#__PURE__*/React.createElement("span", {
+    }, T("theory.spiral.2", "The dimensions aren't separate layers — they interpenetrate. A body state IS a part IS a meaning structure IS a relational pattern. Direction of entry matters less than quality of contact.")))
+  }, {
+    id: "modality",
+    title: plain ? "Why No Single Approach Is Enough" : "Why No Single Modality Is Enough",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
       style: {
-        fontSize: "0.6rem",
-        color: d.color,
-        background: `${d.color}18`,
-        padding: "1px 6px",
-        borderRadius: 8,
-        textTransform: "uppercase",
-        letterSpacing: "0.08em"
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
       }
-    }, d.zone)), /*#__PURE__*/React.createElement("p", {
+    }, T("theory.modality.1", "Every healing modality privileges certain dimensions and is blind to others. Somatic Experiencing excels at body completion and capacity but doesn't address identity dissolution. Meditation develops differentiation at the deepest level but can leave relational predictions untouched. Talk therapy builds cognitive understanding but rarely completes a thwarted fight response.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.modality.2", "This framework maps 50+ modalities across all ten dimensions, showing where each is effective, partial, or ineffective. The goal isn't collecting modalities — it's seeing clearly which dimensions your current practice covers and which it doesn't.")))
+  }, {
+    id: "trauma",
+    title: plain ? "What Healing Actually Means" : "What Is Trauma?",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.trauma.1", "Trauma is unintegrated experience. The organism did something intelligent to survive — froze, fled, fawned, collapsed, dissociated, braced — and that adaptation now runs in contexts where it no longer serves. The body is still bracing against a blow that landed decades ago. The nervous system is still scanning for danger in a room full of friends. The relational prediction — people leave, my needs are too much, closeness means engulfment — still governs every intimate encounter.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.trauma.2", "This reframing matters because it changes everything about the project of healing. You are not fixing what's broken. You are completing what was interrupted. The survival response was intelligent; it simply never got to finish. The emotion was too much; it simply never got to be felt. The relational wound closed over before it could be cleaned.")))
+  }, {
+    id: "coherence",
+    title: plain ? "Why the System Makes Sense" : "The Coherence Problem",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.coherence.1", "The system is always coherent. A traumatized system is not broken or chaotic — it is coherently organized around survival. Every body pattern, every relational prediction, every identity structure, every emotional defense fits together with its own internal logic. The 'strong one' who can't feel vulnerability, the body that won't complete the fight response, the prediction that closeness means engulfment — these are not random symptoms. They are a coherent architecture of self-protection.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.coherence.2", "Healing does not make an incoherent system coherent. It reorganizes what the system is coherent around. Instead of coherence organized around wound and survival, you develop coherence organized around wholeness — nothing excluded, nothing split off, nothing frozen.")))
+  }, {
+    id: "integrity",
+    title: plain ? "Wholeness" : "Integrity: Coherence Organized Around Wholeness",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.integrity.1", "Integrity is not moral uprightness — though that follows naturally — but structural wholeness and coherence. Nothing excluded from self-experience. A system organized around wound maintains coherence through exclusion: the 'strong one' coherently excludes vulnerability; the 'spiritual one' coherently excludes the animal; the 'nice one' coherently excludes aggression. Everything fits — at the cost of amputating whole regions of experience.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.integrity.2", "A system organized around wholeness maintains coherence through inclusion. Nothing is banished. Vulnerability and strength coexist. Spirit and instinct inhabit the same body. Kindness includes the capacity for ferocity. Everything fits — and nothing is missing.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.integrity.3", "This is why shadow work is not optional. Without it, you can achieve a new coherence still organized around exclusion — just a more sophisticated, spiritually polished version of the same fundamental architecture. You can meditate your way to equanimity while your rage stays frozen. You can reorganize identity into a structure still defined by what it excludes — it's just a subtler, more defensible exclusion.")))
+  }, {
+    id: "shadow",
+    title: "Shadow and " + (!plain ? "Integrity" : "Wholeness"),
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.shadow.1", "Every dimension of the cascade can be worked around the shadow rather than through it. You can do somatic work that completes safe impulses while leaving the forbidden ones frozen. You can metabolize acceptable emotions while the shadowed ones stay walled off. You can update comfortable predictions while the deepest projections remain untouched.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.shadow.2", "The felt-sense of shadow work is distinct: not \"finishing what was interrupted\" but \"welcoming home what was banished.\" The rage the kind one won't let the fists express. The vulnerability the strong one has walled off. The desire the spiritual one has transcended. Integrity means structural wholeness — nothing excluded from self-experience. Not moral alignment as a goal, though that follows naturally from wholeness.")))
+  }, {
+    id: "nondual_theory",
+    title: plain ? "The Nondual View" : "The Nondual View",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.nondual.1", "There is a kind of awareness that is always already present — not something that needs to be built, achieved, or developed, but something that can be recognized. It is the awareness that is reading these words right now, prior to any interpretation or reaction. In the Mahamudra and Dzogchen traditions, this is called the 'nature of mind' — awareness aware of itself, independent of its contents.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.nondual.2", "This is not meditation generically. Concentration practices build attentional stability — useful for capacity building. Mindfulness practices build present-moment awareness — useful for differentiation and affect metabolization. But neither produces what these traditions mean by nondual recognition: awareness turning to recognize itself. That specific recognition requires 'pointing out' — direct introduction by a qualified teacher to the nature of awareness. It cannot be arrived at by accumulating skills, though skills help prepare the ground.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.nondual.3", "When this recognition is stabilized, it functions as a perspective accelerator across the entire cascade. The same processing operations — body completion, affect metabolization, model updating, identity reorganization — cover more ground with less friction, because the identity structure that would normally resist these changes is held more lightly. Not because identity is dismissed (that would be spiritual bypass), but because there is felt contact with what exists beyond identity. The self-structure becomes a tool rather than a prison.")))
+  }, {
+    id: "mutual_potentiation",
+    title: plain ? "How the View and Personal Work Amplify Each Other" : "Mutual Potentiation",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.mutual.1", "The nondual view and the personal healing cascade are not dependencies of each other. Neither requires the other to function. But they are mutually potentiating in a way that is central to this framework's thesis.")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        margin: "1rem 0",
+        padding: "1rem",
+        borderLeft: `2px solid ${C.ndu}`,
+        background: `${C.ndu}08`
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.84rem",
+        color: C.nduL,
+        lineHeight: 1.7,
+        margin: 0,
+        fontWeight: 500
+      }
+    }, plain ? "The View accelerates personal work" : "View → Cascade"), /*#__PURE__*/React.createElement("p", {
       style: {
         fontSize: "0.82rem",
         color: C.txM,
         lineHeight: 1.65,
+        margin: 0,
+        marginTop: "0.4rem"
+      }
+    }, T("theory.mutual.2", "The view reduces identity-level friction at every cascade step. Without it, disconfirming evidence provided from within the ego structure makes progress but the ego can always reassimilate the change into its existing architecture. With the view, a much more accurate model of what you are enters the process, saving many iterations. Body completions happen more easily. Emotions can be contacted more fully without identity-fusion. Beliefs update more readily because identity isn't gripping them in place."))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        margin: "0 0 1rem",
+        padding: "1rem",
+        borderLeft: `2px solid ${C.acc}`,
+        background: `${C.acc}08`
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.84rem",
+        color: C.accL,
+        lineHeight: 1.7,
+        margin: 0,
+        fontWeight: 500
+      }
+    }, plain ? "Personal work stabilizes the View" : "Cascade → View"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.82rem",
+        color: C.txM,
+        lineHeight: 1.65,
+        margin: 0,
+        marginTop: "0.4rem"
+      }
+    }, T("theory.mutual.3", "Unresolved trauma, incomplete somatic responses, unmetabolized affect, and unexamined shadow material all generate egoic noise — reactivity and identity-grip that occlude the awareness that is always already present. As the cascade clears these impediments, the view becomes less obscured, more stable, and more deeply integrated into lived experience rather than remaining a peak state or a meditation-only phenomenon. The cascade doesn't create the awareness. It removes what's in the way."))), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
         margin: 0
       }
-    }, T("theory." + d.id, clinicalTexts[d.id])));
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, "The Spiral, Not the Staircase"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.spiral.1", "There is a natural direction — capacity before depth, body before meaning, feeling before insight — but the dimensions are in constant dialogue. Body completion surfaces frozen emotions, and contacting emotion can spontaneously release body patterns. The process is a conversation between dimensions, not a staircase through them. Each turn revisits all dimensions at greater depth as new material becomes accessible from the new baseline.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.spiral.2", "The dimensions aren't separate layers — they interpenetrate. A body state IS a part IS a meaning structure IS a relational pattern. Direction of entry matters less than quality of contact."))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, "Why No Single ", plain ? "Approach" : "Modality", " Is Enough"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.modality.1", "Every healing modality privileges certain dimensions and is blind to others. Somatic Experiencing excels at body completion and capacity but doesn't address identity dissolution. Meditation develops differentiation at the deepest level but can leave relational predictions untouched. Talk therapy builds cognitive understanding but rarely completes a thwarted fight response.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.modality.2", "This framework maps 50+ modalities across all nine dimensions, showing where each is effective, partial, or ineffective. The goal isn't collecting modalities — it's seeing clearly which dimensions your current practice covers and which it doesn't."))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, "Shadow and ", plain ? "Wholeness" : "Integrity"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.shadow.1", "Every dimension of the cascade can be worked around the shadow rather than through it. You can do somatic work that completes safe impulses while leaving the forbidden ones frozen. You can metabolize acceptable emotions while the shadowed ones stay walled off. You can update comfortable predictions while the deepest projections remain untouched.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.shadow.2", "The felt-sense of shadow work is distinct: not \"finishing what was interrupted\" but \"welcoming home what was banished.\" The rage the kind one won't let the fists express. The vulnerability the strong one has walled off. The desire the spiritual one has transcended. Integrity means structural wholeness — nothing excluded from self-experience. Not moral alignment as a goal, though that follows naturally from wholeness."))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, plain ? "Why the System Makes Sense" : "The Coherence Problem"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.coherence.1", "The system is always coherent. A traumatized system is not broken or chaotic — it is coherently organized around survival. Every body pattern, every relational prediction, every identity structure, every emotional defense fits together with its own internal logic. The 'strong one' who can't feel vulnerability, the body that won't complete the fight response, the prediction that closeness means engulfment — these are not random symptoms. They are a coherent architecture of self-protection.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.coherence.2", "Healing does not make an incoherent system coherent. It reorganizes what the system is coherent around. Instead of coherence organized around wound and survival, you develop coherence organized around wholeness — nothing excluded, nothing split off, nothing frozen."))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, plain ? "Wholeness" : "Integrity: Coherence Organized Around Wholeness"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.integrity.1", "Integrity is not moral uprightness — though that follows naturally — but structural wholeness and coherence. Nothing excluded from self-experience. A system organized around wound maintains coherence through exclusion: the 'strong one' coherently excludes vulnerability; the 'spiritual one' coherently excludes the animal; the 'nice one' coherently excludes aggression. Everything fits — at the cost of amputating whole regions of experience.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.integrity.2", "A system organized around wholeness maintains coherence through inclusion. Nothing is banished. Vulnerability and strength coexist. Spirit and instinct inhabit the same body. Kindness includes the capacity for ferocity. Everything fits — and nothing is missing.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.integrity.3", "This is why shadow work is not optional. Without it, you can achieve a new coherence still organized around exclusion — just a more sophisticated, spiritually polished version of the same fundamental architecture. You can meditate your way to equanimity while your rage stays frozen. You can reorganize identity into a structure still defined by what it excludes — it's just a subtler, more defensible exclusion."))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, plain ? "When Core Beliefs Contradict Each Other" : "Contradictory Beliefs and System Degradation"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.contradict.1", "Sometimes the system holds beliefs that contradict each other — not ordinary ambivalence, but deep structural contradictions. 'I must be strong to survive' AND 'I am fundamentally helpless.' 'I must earn love' AND 'real love can't be earned.' 'Connection is what I need most' AND 'connection is the source of my deepest pain.' These are not abstract propositions — they are embodied, living in the nervous system as simultaneous, incompatible activation patterns. The body is literally trying to go in two directions at once.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.contradict.2", "A single maladaptive belief is at least stable — the system organized around 'people leave' can achieve a grim equilibrium. Contradictory beliefs deny the system even that. When two core beliefs pull in opposite directions, the result is chronic oscillation — a system always activated because it cannot settle into either position. Over time this produces chronic shame, decision paralysis, a pervasive sense of fraudulence, and physical degradation: elevated cortisol, impaired immunity, disrupted sleep, and inflammation that resists medical explanation.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.contradict.3", "The resolution path runs through the cascade: build enough capacity to hold both truths simultaneously without collapsing into either. Let the body complete the responses that were interrupted — both the fight that was suppressed AND the collapse that was forbidden. Metabolize the affects underneath both poles. Differentiate: this was true then, in that specific situation. Update through corrective experience: discover that strength and vulnerability can coexist in the same moment, in the same body, in the same relationship. Shadow work is often essential here, because one pole of the contradiction is usually the shadowed one."))), /*#__PURE__*/React.createElement("div", {
-    style: {
-      background: C.card,
-      border: `1px solid ${C.bdr}`,
-      borderRadius: 10,
-      padding: "1.5rem",
-      marginBottom: "1rem"
-    }
-  }, /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: "1.15rem",
-      fontWeight: 400,
-      color: C.txL,
-      marginTop: 0,
-      marginBottom: "0.75rem"
-    }
-  }, "The Most Reliable Compass"), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0
-    }
-  }, T("theory.compass.1", "When healing is stuck, the question is always: which dimension of contact am I avoiding? The dimension you're most reluctant to engage is usually the one most needed. The body worker who never does relational work. The meditator who never feels. The talk therapy client who never lets the body complete. The ceremony participant who never integrates sober.")), /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: "0.88rem",
-      color: C.txM,
-      lineHeight: 1.75,
-      margin: 0,
-      marginTop: "0.75rem"
-    }
-  }, T("theory.compass.2", "Explore the other tabs to see the full cascade, assess your own program, understand common traps, and use the diagnostic compass.")))), view === "assess" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    }, T("theory.mutual.4", "This mutual potentiation is why the Healing Spiral recommends working both tracks simultaneously, not sequentially. Neither track alone reaches its full potential without the other. This is a novel architectural claim: that nondual recognition functions not as a spiritual endpoint or separate path, but as a processing accelerator across all cascade steps — and is itself accelerated by the cascade work.")))
+  }, {
+    id: "contradict",
+    title: plain ? "When Core Beliefs Contradict Each Other" : "Contradictory Beliefs and System Degradation",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.contradict.1", "Sometimes the system holds beliefs that contradict each other — not ordinary ambivalence, but deep structural contradictions. 'I must be strong to survive' AND 'I am fundamentally helpless.' 'I must earn love' AND 'real love can't be earned.' 'Connection is what I need most' AND 'connection is the source of my deepest pain.' These are not abstract propositions — they are embodied, living in the nervous system as simultaneous, incompatible activation patterns. The body is literally trying to go in two directions at once.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.contradict.2", "A single maladaptive belief is at least stable — the system organized around 'people leave' can achieve a grim equilibrium. Contradictory beliefs deny the system even that. When two core beliefs pull in opposite directions, the result is chronic oscillation — a system always activated because it cannot settle into either position. Over time this produces chronic shame, decision paralysis, a pervasive sense of fraudulence, and physical degradation: elevated cortisol, impaired immunity, disrupted sleep, and inflammation that resists medical explanation.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.contradict.3", "The resolution path runs through the cascade: build enough capacity to hold both truths simultaneously without collapsing into either. Let the body complete the responses that were interrupted — both the fight that was suppressed AND the collapse that was forbidden. Metabolize the affects underneath both poles. Differentiate: this was true then, in that specific situation. Update through corrective experience: discover that strength and vulnerability can coexist in the same moment, in the same body, in the same relationship. Shadow work is often essential here, because one pole of the contradiction is usually the shadowed one.")))
+  }, {
+    id: "compass",
+    title: "The Compass",
+    content: () => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0
+      }
+    }, T("theory.compass.1", "When healing is stuck, the question is always: which dimension of contact am I avoiding? The dimension you're most reluctant to engage is usually the one most needed. The body worker who never does relational work. The meditator who never feels. The talk therapy client who never lets the body complete. The ceremony participant who never integrates sober.")), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.88rem",
+        color: C.txM,
+        lineHeight: 1.75,
+        margin: 0,
+        marginTop: "0.75rem"
+      }
+    }, T("theory.compass.2", "Explore the other tabs to see the full cascade, assess your own program, understand common traps, and use the diagnostic compass.")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: "1rem",
+        padding: "1rem",
+        background: `${C.acc}10`,
+        border: `1px solid ${C.acc}30`,
+        borderRadius: 8
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.85rem",
+        color: C.txM,
+        lineHeight: 1.7,
+        margin: 0
+      }
+    }, T("theory.compass.cta", "Want guidance navigating your specific situation? The assessment tool can show you where your gaps are, and if you'd like personal support, you can book a coaching session.")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: "0.75rem",
+        marginTop: "0.75rem",
+        flexWrap: "wrap"
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setView("assess");
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      },
+      style: {
+        padding: "0.45rem 1rem",
+        background: C.acc,
+        color: C.txL,
+        border: "none",
+        borderRadius: 6,
+        cursor: "pointer",
+        fontFamily: "inherit",
+        fontSize: "0.82rem"
+      }
+    }, "Assess My Program"), /*#__PURE__*/React.createElement("a", {
+      href: "https://calendly.com/eli-van",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: {
+        padding: "0.45rem 1rem",
+        background: "transparent",
+        color: C.accL,
+        border: `1px solid ${C.acc}55`,
+        borderRadius: 6,
+        textDecoration: "none",
+        fontFamily: "inherit",
+        fontSize: "0.82rem"
+      }
+    }, "Book a Coaching Session"))))
+  }].map(sec => {
+    const isOpen = thOpen.has(sec.id);
+    return /*#__PURE__*/React.createElement("div", {
+      key: sec.id,
+      style: {
+        background: C.card,
+        border: `1px solid ${C.bdr}`,
+        borderRadius: 10,
+        marginBottom: "0.5rem",
+        overflow: "hidden"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: () => {
+        const n = new Set(thOpen);
+        if (n.has(sec.id)) n.delete(sec.id);else n.add(sec.id);
+        setThOpen(n);
+      },
+      style: {
+        padding: "1rem 1.5rem",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        userSelect: "none"
+      }
+    }, /*#__PURE__*/React.createElement("h2", {
+      style: {
+        fontSize: "1.05rem",
+        fontWeight: 400,
+        color: isOpen ? C.txL : C.txM,
+        margin: 0,
+        transition: "color 0.2s"
+      }
+    }, sec.title), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: C.txM,
+        fontSize: "0.9rem",
+        transition: "transform 0.25s",
+        transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+        flexShrink: 0,
+        marginLeft: "1rem"
+      }
+    }, "\u203A")), isOpen && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "0 1.5rem 1.5rem",
+        animation: "fadeIn 0.3s ease"
+      }
+    }, sec.content()));
+  })), view === "assess" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
     style: {
       fontSize: "0.9rem",
       color: C.txM,
@@ -3364,7 +3659,14 @@ function HealingSpiralApp() {
       background: LVL_C[r.level],
       transition: "width 0.5s"
     }
-  })), (r.eMatch.length > 0 || r.pMatch.length > 0 || r.harmMatch.length > 0) && /*#__PURE__*/React.createElement("div", {
+  })), r.potentiated && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: "0.2rem",
+      fontSize: "0.65rem",
+      color: C.nduL,
+      fontStyle: "italic"
+    }
+  }, "\u2191 potentiated by nondual view"), (r.eMatch.length > 0 || r.pMatch.length > 0 || r.harmMatch.length > 0) && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: "0.25rem",
       fontSize: "0.72rem",
@@ -3389,7 +3691,33 @@ function HealingSpiralApp() {
       color: C.ineffTx,
       fontStyle: "italic"
     }
-  }, plain ? "No coverage — consider: " : "No coverage — consider: ", (r.dim.eff || []).slice(0, 2).map(m => m.name).join(", "))))), recs && recs.primary && (recs.primary.length > 0 || recs.secondary.length > 0) && /*#__PURE__*/React.createElement("div", {
+  }, plain ? "No coverage — consider: " : "No coverage — consider: ", (r.dim.eff || []).slice(0, 2).map(m => m.name).join(", "))))), (() => {
+    const nduResult = asmnt.results.find(r => r.dim.id === "nondual");
+    if (!nduResult || nduResult.level !== "none") return null;
+    const hasAsymptotic = asmnt.results.filter(r => r.dim.id !== "nondual" && r.level !== "none").length >= 5;
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: `${C.ndu}08`,
+        border: `1px solid ${C.ndu}33`,
+        borderRadius: 10,
+        padding: "1.25rem",
+        marginBottom: "1rem"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: "0.9rem",
+        color: C.nduL,
+        marginBottom: "0.5rem"
+      }
+    }, plain ? "The Nondual View — a potential accelerator" : "Nondual View — perspective accelerator absent"), /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "0.82rem",
+        color: C.txM,
+        lineHeight: 1.65,
+        margin: 0
+      }
+    }, hasAsymptotic ? plain ? "You have good coverage across many areas — but none of your current practices develop nondual recognition. This may explain why progress feels asymptotically limited despite doing genuine work. The nondual view acts as a processing accelerator: it reduces the identity-level friction at every step, allowing the same work to cover more ground. Consider Mahamudra, Dzogchen, or Realization Process. A single retreat with a qualified teacher (like Pointing Out the Great Way) can shift the efficiency of everything else you're doing." : "Your program has broad cascade coverage but lacks nondual view support. This creates a characteristic pattern: genuine progress that becomes asymptotically limited as identity-level friction slows each processing step. The nondual view — awareness recognizing itself — reduces this friction across the entire cascade. Consider: Mahamudra (pointing-out instruction), Dzogchen (trekchö), Realization Process, or Advaita self-inquiry. A single Pointing Out the Great Way retreat can dramatically accelerate the spiral." : plain ? "None of your current practices specifically develop nondual recognition — awareness recognizing itself. This isn't required, but when stabilized, it acts as an accelerator across all the other areas. Consider adding a practice from the Mahamudra, Dzogchen, or Advaita traditions." : "No nondual view support in your current program. This dimension is not required for cascade progress, but functions as a perspective accelerator when present — reducing identity-level friction at every cascade step. Consider adding a pointing-out style practice."));
+  })(), recs && recs.primary && (recs.primary.length > 0 || recs.secondary.length > 0) && /*#__PURE__*/React.createElement("div", {
     style: {
       background: C.card,
       border: `1px solid ${C.accL}33`,
@@ -4022,7 +4350,7 @@ function HealingSpiralApp() {
       textAlign: "center",
       marginTop: "0.5rem"
     }
-  }, plain ? "Cross-Cutting Areas — weave through everything" : "Orthogonal Dimensions — run throughout, not stages"), renderDim("energetic", 6, true), renderDim("shadow", 7, true))), view === "modalities" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }, plain ? "Cross-Cutting Areas — weave through everything" : "Orthogonal Dimensions — run throughout, not stages"), renderDim("energetic", 6, true), renderDim("shadow", 7, true), renderDim("nondual", 8, true))), view === "modalities" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       background: C.card,
       border: `1px solid ${C.bdr}`,
@@ -4434,7 +4762,341 @@ function HealingSpiralApp() {
         margin: 0
       }
     }, T("trap." + ti + ".antidote", t.antidote)))));
-  })), view === "compass" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  })), view === "resources" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.card,
+      border: `1px solid ${C.bdr}`,
+      borderRadius: 10,
+      padding: "1.5rem",
+      marginBottom: "1.5rem"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "0.9rem",
+      color: C.txM,
+      lineHeight: 1.7,
+      margin: 0
+    }
+  }, "Retreats, courses, and training programs recommended by the SleepAwake community. Each is tagged with the ", plain ? "areas" : "dimensions", " it primarily addresses.")), [{
+    name: "Pointing Out the Great Way",
+    type: "Retreat / Training",
+    format: "In person + online",
+    desc: "Mahamudra meditation in the Tibetan Buddhist lineage. Includes pointing-out instruction — direct introduction to the nature of awareness itself. The most precise technology available for stabilizing nondual recognition. Also develops extraordinary differentiation and can catalyze identity dissolution.",
+    dims: ["nondual", "diff", "identity", "energetic"],
+    rec: "Jeff, Danjo, Cat",
+    deep: false
+  }, {
+    name: "SleepAwake Immersive",
+    type: "Multi-day immersive",
+    format: "In person",
+    desc: "Multi-modality curriculum touching somatic integration, parts work, and relational field. Designed to engage several dimensions simultaneously in a held container.",
+    dims: ["ground", "capacity", "completion", "affect", "models"],
+    rec: "Eli",
+    deep: false
+  }, {
+    name: "10 Day Vipassana",
+    type: "Silent retreat",
+    format: "In person (global)",
+    desc: "Intensive insight meditation in the Goenka tradition. Ten days of silence, body scanning, and equanimity practice. Builds differentiation and capacity through sustained, disciplined observation.",
+    dims: ["diff", "capacity", "energetic"],
+    rec: "Raven, Danjo",
+    deep: true
+  }, {
+    name: "Insight Meditation Society",
+    type: "Retreat center",
+    format: "In person (Barre, MA)",
+    desc: "Established retreat center offering Vipassana and other Buddhist meditation retreats ranging from weekend to multi-month. Teachers include Joseph Goldstein and Sharon Salzberg.",
+    dims: ["diff", "capacity", "energetic"],
+    rec: "Cat",
+    deep: false
+  }, {
+    name: "Spirit Rock",
+    type: "Retreat center",
+    format: "In person (Woodacre, CA)",
+    desc: "West Coast retreat center in the Theravada tradition. Offers retreats in mindfulness, loving-kindness, and insight meditation with experienced teachers.",
+    dims: ["diff", "capacity", "affect"],
+    rec: "Cat",
+    deep: false
+  }, {
+    name: "Shamanic Dearmoring",
+    type: "Intensive",
+    format: "In person",
+    desc: "Deep body-based work releasing chronic muscular armoring and frozen survival responses. Intense — requires existing capacity and a willingness to let the body move.",
+    dims: ["completion", "affect", "energetic", "shadow"],
+    rec: "Jeff, Katara",
+    deep: true
+  }, {
+    name: "Hridaya Yoga",
+    type: "Course / Retreat",
+    format: "In person + online",
+    desc: "Heart-centered yoga and silent meditation retreats grounded in non-dual yogic teachings. Emphasizes the Spiritual Heart as the seat of awareness. Combines hatha yoga, pranayama, and meditation.",
+    dims: ["energetic", "identity", "capacity"],
+    rec: "Adrián",
+    deep: false
+  }, {
+    name: "Energy Mastery Program",
+    type: "2-year training",
+    format: "In person (Berkeley, CA) + online",
+    desc: "Lynda Caesara's program to increase resolution of sensitivity and energetic capacity. Meets one day per month for two years. Develops the subtle body dimension with unusual depth.",
+    dims: ["energetic", "capacity"],
+    rec: "Nate, Cat",
+    deep: false
+  }, {
+    name: "Wim Hof Method",
+    type: "Course",
+    format: "Online + in person",
+    desc: "Cold exposure and breathing techniques that build stress tolerance and autonomic regulation. Develops capacity through controlled physiological challenge.",
+    dims: ["capacity"],
+    rec: "Danjo",
+    deep: false
+  }, {
+    name: "Level UP Relatefulness Training",
+    type: "Training",
+    format: "In person + online",
+    desc: "Circling and relational presence training. Develops the ability to be present with others in real time, track relational dynamics, and stay in contact. Directly works the relational field.",
+    dims: ["ground", "models", "diff"],
+    rec: "Stephen",
+    deep: false
+  }, {
+    name: "SAS Circling Leadership Training",
+    type: "Training",
+    format: "In person + online",
+    desc: "Deeper circling training focused on facilitation and leadership within relational practice. Builds group field skills and confronts relational edges.",
+    dims: ["ground", "models", "shadow"],
+    rec: "Stephen",
+    deep: false
+  }, {
+    name: "Nervous System Mastery",
+    type: "Course",
+    format: "Virtual",
+    desc: "Online training in nervous system regulation, polyvagal theory, and building a wider window of tolerance. Practical capacity-building for people who need more ground before going deep.",
+    dims: ["capacity"],
+    rec: "Kiki",
+    deep: false
+  }, {
+    name: "EMRES Practitioner Training",
+    type: "Professional training",
+    format: "Online",
+    desc: "Training in Emotional Resolution — a method for resolving emotional tension by tracking interoceptive sensation. From the Emotional Health Institute.",
+    dims: ["affect", "completion"],
+    rec: "Kiki",
+    deep: false
+  }, {
+    name: "Art of Communication",
+    type: "Course",
+    format: "Online",
+    desc: "Introduction to Nonviolent Communication (NVC). Develops the ability to distinguish observations from evaluations, feelings from thoughts, and needs from strategies.",
+    dims: ["diff", "ground"],
+    rec: "Raven",
+    deep: false
+  }, {
+    name: "Armand Volkas — Drama Therapy",
+    type: "Workshop / Training",
+    format: "Online + in person",
+    desc: "Drama therapy and playback theater. Uses theatrical frame to access disowned parts, complete thwarted responses, and create corrective experience through enactment.",
+    dims: ["shadow", "completion", "models"],
+    rec: "Adrián",
+    deep: false
+  }, {
+    name: "CoCrea Dance Your Medicine",
+    type: "Workshop",
+    format: "In person",
+    desc: "Ecstatic dance and movement practice by Wren LaFeet. Free movement can access stuck impulses, energetic blocks, and emotions below the verbal level.",
+    dims: ["completion", "energetic", "affect"],
+    rec: "Kiki",
+    deep: false
+  }, {
+    name: "Yogalap Breathwork",
+    type: "Course",
+    format: "Online",
+    desc: "Structured breathwork training. Breath practices can build capacity, access energetic shifts, and surface frozen affect.",
+    dims: ["capacity", "energetic", "affect"],
+    rec: "Danjo",
+    deep: false
+  }, {
+    name: "NLP / NLP Marin",
+    type: "Professional training",
+    format: "In person (Marin, CA)",
+    desc: "Neuro-Linguistic Programming training. Develops the ability to identify and shift belief patterns, reframe narratives, and work with cognitive structures.",
+    dims: ["models", "diff"],
+    rec: "Kiki",
+    deep: false
+  }, {
+    name: "45 Days to Awakening",
+    type: "Intensive program",
+    format: "Variable",
+    desc: "Extended awakening program. Sustained intensive practice over 45 days, designed to catalyze deep shifts in identity and awareness. Can include nondual recognition depending on the teacher and lineage.",
+    dims: ["identity", "nondual", "diff", "energetic"],
+    rec: "Danjo",
+    deep: true
+  }, {
+    name: "Leading From the Center",
+    type: "Course",
+    format: "In person (Sacramento, CA)",
+    desc: "Authentic Leadership Center program. Integrates leadership development with self-awareness, relational skills, and personal responsibility.",
+    dims: ["ground", "diff"],
+    rec: "Brinn",
+    deep: false
+  }, {
+    name: "Tantric Man",
+    type: "Course",
+    format: "Virtual",
+    desc: "Explores masculine/feminine energy dynamics, embodiment, and intimate relating. Works with power, desire, and polarity.",
+    dims: ["shadow", "energetic", "ground"],
+    rec: "Kiki",
+    deep: true
+  }, {
+    name: "Conscious Leadership Group",
+    type: "Training / Coaching",
+    format: "In person + online",
+    url: "https://conscious.is",
+    desc: "Leadership development grounded in radical responsibility, candor, and self-awareness. The 15 Commitments framework builds differentiation (above/below the line), emotional completion, and integrity. Develops the capacity to see stories as stories and to source security internally.",
+    dims: ["diff", "ground", "affect", "models"],
+    rec: "Raven, Katara, Eli",
+    deep: false
+  }, {
+    name: "School of Tears",
+    type: "Cohort / Classes",
+    format: "In person + online",
+    url: "https://www.schooloftears.com",
+    desc: "Re-evaluation Counseling community led by Ariel Kohane. Peer counseling classes, cohort programs, and one-on-one work focused on reclaiming emotional discharge — crying, trembling, laughing — as a regular practice. Healing in connection, not isolation. Democratizes therapy through reciprocal co-counseling.",
+    dims: ["ground", "affect", "completion", "capacity"],
+    rec: "Eli",
+    deep: false
+  }].map((r, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      background: C.card,
+      border: `1px solid ${C.bdr}`,
+      borderRadius: 10,
+      padding: "1.25rem",
+      marginBottom: "0.5rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "flex-start",
+      marginBottom: "0.5rem",
+      flexWrap: "wrap",
+      gap: "0.5rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.95rem",
+      color: C.txL
+    }
+  }, r.url ? /*#__PURE__*/React.createElement("a", {
+    href: r.url,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      color: C.txL,
+      textDecoration: "none",
+      borderBottom: `1px solid ${C.bdr}`
+    }
+  }, r.name) : r.name), r.deep && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.6rem",
+      color: C.warn,
+      marginLeft: "0.5rem",
+      verticalAlign: "middle"
+    }
+  }, "\uD83C\uDF36 deep work")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "0.4rem",
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.6rem",
+      color: C.txM,
+      background: C.cardH,
+      padding: "2px 8px",
+      borderRadius: 8
+    }
+  }, r.type), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.6rem",
+      color: C.txM,
+      background: C.cardH,
+      padding: "2px 8px",
+      borderRadius: 8
+    }
+  }, r.format))), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "0.82rem",
+      color: C.txM,
+      lineHeight: 1.6,
+      margin: 0,
+      marginBottom: "0.6rem"
+    }
+  }, r.desc), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      flexWrap: "wrap",
+      gap: "0.4rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: "0.3rem",
+      flexWrap: "wrap"
+    }
+  }, r.dims.map(dId => {
+    const dim = DIMS.find(x => x.id === dId);
+    if (!dim) return null;
+    return /*#__PURE__*/React.createElement("span", {
+      key: dId,
+      style: {
+        fontSize: "0.6rem",
+        color: dim.colorL,
+        background: `${dim.color}18`,
+        padding: "2px 7px",
+        borderRadius: 8
+      }
+    }, plain ? dim.plainName : dim.name);
+  })), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.68rem",
+      color: C.txM,
+      fontStyle: "italic"
+    }
+  }, "rec: ", r.rec)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: `${C.acc}10`,
+      border: `1px solid ${C.acc}30`,
+      borderRadius: 8,
+      padding: "1rem",
+      marginTop: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "0.82rem",
+      color: C.txM,
+      lineHeight: 1.6,
+      margin: 0
+    }
+  }, "These resources are recommended by the SleepAwake community and are not endorsements. Want help choosing what's right for your specific situation?"), /*#__PURE__*/React.createElement("a", {
+    href: "https://calendly.com/eli-van",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    style: {
+      display: "inline-block",
+      marginTop: "0.6rem",
+      padding: "0.45rem 1rem",
+      background: "transparent",
+      color: C.idnL,
+      border: `1px solid ${C.idn}44`,
+      borderRadius: 6,
+      textDecoration: "none",
+      fontFamily: "inherit",
+      fontSize: "0.8rem"
+    }
+  }, "Book a Coaching Session"))), view === "compass" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       background: C.card,
       border: `1px solid ${C.bdr}`,
@@ -4665,7 +5327,7 @@ function HealingSpiralApp() {
       flexDirection: "column",
       gap: "0.6rem"
     }
-  }, DIMS.filter(d => ["energetic", "shadow"].includes(d.id)).map(dim => {
+  }, DIMS.filter(d => ["energetic", "shadow", "nondual"].includes(d.id)).map(dim => {
     const c = COMPASS[dim.id];
     if (!c) return null;
     const isOpen = sel === dim.id;
@@ -4893,6 +5555,9 @@ function HealingSpiralApp() {
   }, {
     k: "modalities",
     l: plain ? "Approaches" : "Modalities"
+  }, {
+    k: "resources",
+    l: "Retreats/Programs"
   }].map(v => /*#__PURE__*/React.createElement("button", {
     key: v.k,
     onClick: () => {
@@ -5060,9 +5725,8 @@ function HealingSpiralApp() {
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:3px}`));
 }
 
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(React.createElement(HealingSpiralApp));
-  </script>
+</script>
 </body>
 </html>
