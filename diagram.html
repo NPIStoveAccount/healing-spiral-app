@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Healing Spiral — Ten Dimensions of Contact</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0f;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 10px 16px 20px;
+    position: relative;
+  }
+
+  /* SVG wrapper */
+  .svg-wrap {
+    width: 100%;
+    position: relative;
+  }
+  .svg-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Info panel */
+  .info-panel {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 12px;
+    width: 90%;
+    max-width: 600px;
+    background: rgba(15, 15, 25, 0.92);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 20px 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    transform: translateX(-50%) translateY(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 10;
+  }
+  .info-panel.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .info-panel .dim-category {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+  .info-panel .dim-name {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .info-panel .dim-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    opacity: 0.75;
+    font-weight: 300;
+  }
+  .info-panel .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .info-panel .close-btn:hover { color: #fff; }
+
+  /* Instruction hint */
+  .hint {
+    text-align: center;
+    color: #556;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 6px;
+    transition: opacity 0.5s;
+  }
+
+  /* Hover zones in SVG */
+  .hover-zone {
+    cursor: pointer;
+    transition: opacity 0.25s;
+  }
+  .hover-zone:hover { opacity: 1 !important; }
+
+  /* Highlighted state */
+  .dim-group { transition: opacity 0.3s, filter 0.3s; }
+  .dim-group.dimmed { opacity: 0.15; }
+  .dim-group.highlighted { opacity: 1; filter: brightness(1.3); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .info-panel { width: 95%; padding: 16px 18px; bottom: 8px; }
+    .info-panel .dim-name { font-size: 16px; }
+    .info-panel .dim-desc { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="svg-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1060" width="900" height="1060">
+      <defs>
+        <filter id="bandGlow" x="-20%" y="-50%" width="140%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="groundGlow" x="-10%" y="-40%" width="120%" height="180%">
+          <feGaussianBlur stdDeviation="18" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="6"/>
+        </filter>
+        <filter id="curveGlow" x="-10%" y="-5%" width="120%" height="110%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="selectedGlow" x="-30%" y="-60%" width="160%" height="220%">
+          <feGaussianBlur stdDeviation="8" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="900" height="1060" fill="#0a0a0f"/>
+
+      <!-- Title -->
+      <text x="450" y="48" text-anchor="middle" fill="#ffffff" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="22" font-weight="300" letter-spacing="2">The Healing Spiral</text>
+      <text x="450" y="76" text-anchor="middle" fill="#888899" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="300" letter-spacing="3">TEN DIMENSIONS OF CONTACT</text>
+
+      <!-- ==================== RELATIONAL FIELD (Ground) ==================== -->
+      <g class="dim-group hover-zone" data-dim="relational-field">
+        <ellipse cx="450" cy="920" rx="380" ry="45" fill="#d4a843" opacity="0.06" filter="url(#groundGlow)"/>
+        <ellipse cx="450" cy="920" rx="320" ry="30" fill="#d4a843" opacity="0.08" filter="url(#groundGlow)"/>
+        <ellipse cx="450" cy="920" rx="250" ry="18" fill="#d4a843" opacity="0.12" filter="url(#groundGlow)"/>
+        <line x1="140" y1="920" x2="760" y2="920" stroke="#d4a843" stroke-width="1" opacity="0.4"/>
+        <line x1="140" y1="921" x2="760" y2="921" stroke="#d4a843" stroke-width="2" opacity="0.15"/>
+        <text x="450" y="958" text-anchor="middle" fill="#d4a843" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" letter-spacing="1.5">THE RELATIONAL FIELD</text>
+        <text x="450" y="976" text-anchor="middle" fill="#d4a843" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" font-weight="300" letter-spacing="1" opacity="0.6">The ground beneath everything</text>
+        <!-- Larger invisible hit zone -->
+        <rect x="100" y="895" width="700" height="90" fill="transparent"/>
+      </g>
+
+      <!-- ==================== CASCADE BANDS ==================== -->
+
+      <!-- Band 1: Capacity Building -->
+      <g class="dim-group hover-zone" data-dim="capacity-building">
+        <rect x="185" y="830" width="530" height="32" rx="3" fill="#c0392b" opacity="0.25" filter="url(#bandGlow)"/>
+        <rect x="185" y="830" width="530" height="32" rx="3" fill="none" stroke="#c0392b" stroke-width="0.7" opacity="0.5"/>
+        <text x="170" y="851" text-anchor="end" fill="#c0392b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" opacity="0.9">1</text>
+        <text x="730" y="851" text-anchor="start" fill="#c0392b" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Capacity Building</text>
+        <rect x="140" y="825" width="620" height="42" fill="transparent"/>
+      </g>
+
+      <!-- Band 2: Physiological Completion -->
+      <g class="dim-group hover-zone" data-dim="physiological-completion">
+        <rect x="195" y="730" width="510" height="32" rx="3" fill="#d35400" opacity="0.25" filter="url(#bandGlow)"/>
+        <rect x="195" y="730" width="510" height="32" rx="3" fill="none" stroke="#d35400" stroke-width="0.7" opacity="0.5"/>
+        <text x="180" y="751" text-anchor="end" fill="#d35400" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" opacity="0.9">2</text>
+        <text x="720" y="751" text-anchor="start" fill="#d35400" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Physiological Completion</text>
+        <rect x="150" y="725" width="610" height="42" fill="transparent"/>
+      </g>
+
+      <!-- Band 3: Affect Metabolization -->
+      <g class="dim-group hover-zone" data-dim="affect-metabolization">
+        <rect x="205" y="630" width="490" height="32" rx="3" fill="#d4a017" opacity="0.25" filter="url(#bandGlow)"/>
+        <rect x="205" y="630" width="490" height="32" rx="3" fill="none" stroke="#d4a017" stroke-width="0.7" opacity="0.5"/>
+        <text x="190" y="651" text-anchor="end" fill="#d4a017" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" opacity="0.9">3</text>
+        <text x="710" y="651" text-anchor="start" fill="#d4a017" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Affect Metabolization</text>
+        <rect x="160" y="625" width="600" height="42" fill="transparent"/>
+      </g>
+
+      <!-- Band 4: Differentiation -->
+      <g class="dim-group hover-zone" data-dim="differentiation">
+        <rect x="215" y="530" width="470" height="32" rx="3" fill="#6a9b5a" opacity="0.25" filter="url(#bandGlow)"/>
+        <rect x="215" y="530" width="470" height="32" rx="3" fill="none" stroke="#6a9b5a" stroke-width="0.7" opacity="0.5"/>
+        <text x="200" y="551" text-anchor="end" fill="#6a9b5a" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" opacity="0.9">4</text>
+        <text x="700" y="551" text-anchor="start" fill="#6a9b5a" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Differentiation</text>
+        <rect x="170" y="525" width="590" height="42" fill="transparent"/>
+      </g>
+
+      <!-- Band 5: Implicit Model Updating -->
+      <g class="dim-group hover-zone" data-dim="implicit-model-updating">
+        <rect x="225" y="430" width="450" height="32" rx="3" fill="#5b8ca8" opacity="0.25" filter="url(#bandGlow)"/>
+        <rect x="225" y="430" width="450" height="32" rx="3" fill="none" stroke="#5b8ca8" stroke-width="0.7" opacity="0.5"/>
+        <text x="210" y="451" text-anchor="end" fill="#5b8ca8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" opacity="0.9">5</text>
+        <text x="690" y="451" text-anchor="start" fill="#5b8ca8" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Implicit Model Updating</text>
+        <rect x="180" y="425" width="580" height="42" fill="transparent"/>
+      </g>
+
+      <!-- Band 6: Identity Reorganization -->
+      <g class="dim-group hover-zone" data-dim="identity-reorganization">
+        <rect x="235" y="330" width="430" height="32" rx="3" fill="#6c5b9e" opacity="0.25" filter="url(#bandGlow)"/>
+        <rect x="235" y="330" width="430" height="32" rx="3" fill="none" stroke="#6c5b9e" stroke-width="0.7" opacity="0.5"/>
+        <text x="220" y="351" text-anchor="end" fill="#6c5b9e" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="400" opacity="0.9">6</text>
+        <text x="680" y="351" text-anchor="start" fill="#6c5b9e" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Identity Reorganization</text>
+        <rect x="190" y="325" width="560" height="42" fill="transparent"/>
+      </g>
+
+      <!-- ==================== ORTHOGONAL CURVES ==================== -->
+
+      <!-- Shadow Integration -->
+      <g class="dim-group hover-zone" data-dim="shadow-integration">
+        <path d="M 310 880 C 340 830, 420 830, 380 780 C 340 730, 280 730, 320 680 C 360 630, 430 630, 390 580 C 350 530, 290 530, 330 480 C 370 430, 440 430, 400 380 C 360 330, 300 330, 340 280"
+              fill="none" stroke="#2ecc71" stroke-width="2" opacity="0.7" filter="url(#curveGlow)"/>
+        <circle cx="380" cy="846" r="4" fill="#2ecc71" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="320" cy="746" r="4" fill="#2ecc71" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="390" cy="646" r="4" fill="#2ecc71" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="330" cy="546" r="4" fill="#2ecc71" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="400" cy="446" r="4" fill="#2ecc71" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="340" cy="346" r="4" fill="#2ecc71" opacity="0.5" filter="url(#nodeGlow)"/>
+        <text x="340" y="265" text-anchor="middle" fill="#2ecc71" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Shadow</text>
+        <text x="340" y="278" text-anchor="middle" fill="#2ecc71" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Integration</text>
+        <!-- Wider invisible hit zone along the curve -->
+        <path d="M 310 880 C 340 830, 420 830, 380 780 C 340 730, 280 730, 320 680 C 360 630, 430 630, 390 580 C 350 530, 290 530, 330 480 C 370 430, 440 430, 400 380 C 360 330, 300 330, 340 280"
+              fill="none" stroke="transparent" stroke-width="24"/>
+      </g>
+
+      <!-- Energetic Reorganization -->
+      <g class="dim-group hover-zone" data-dim="energetic-reorganization">
+        <path d="M 450 880 C 490 830, 540 830, 500 780 C 460 730, 410 730, 450 680 C 490 630, 550 630, 510 580 C 470 530, 420 530, 460 480 C 500 430, 560 430, 520 380 C 480 330, 430 330, 470 280"
+              fill="none" stroke="#c77dba" stroke-width="2" opacity="0.7" filter="url(#curveGlow)"/>
+        <circle cx="500" cy="846" r="4" fill="#c77dba" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="450" cy="746" r="4" fill="#c77dba" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="510" cy="646" r="4" fill="#c77dba" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="460" cy="546" r="4" fill="#c77dba" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="520" cy="446" r="4" fill="#c77dba" opacity="0.5" filter="url(#nodeGlow)"/>
+        <circle cx="470" cy="346" r="4" fill="#c77dba" opacity="0.5" filter="url(#nodeGlow)"/>
+        <text x="470" y="265" text-anchor="middle" fill="#c77dba" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Energetic</text>
+        <text x="470" y="278" text-anchor="middle" fill="#c77dba" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Reorganization</text>
+        <path d="M 450 880 C 490 830, 540 830, 500 780 C 460 730, 410 730, 450 680 C 490 630, 550 630, 510 580 C 470 530, 420 530, 460 480 C 500 430, 560 430, 520 380 C 480 330, 430 330, 470 280"
+              fill="none" stroke="transparent" stroke-width="24"/>
+      </g>
+
+      <!-- Nondual Awareness -->
+      <g class="dim-group hover-zone" data-dim="nondual-awareness">
+        <path d="M 580 880 C 610 830, 640 830, 610 780 C 580 730, 550 730, 580 680 C 610 630, 650 630, 620 580 C 590 530, 560 530, 590 480 C 620 430, 660 430, 630 380 C 600 330, 570 330, 600 280"
+              fill="none" stroke="#f0e6c0" stroke-width="2" opacity="0.6" filter="url(#curveGlow)"/>
+        <circle cx="610" cy="846" r="4" fill="#f0e6c0" opacity="0.4" filter="url(#nodeGlow)"/>
+        <circle cx="580" cy="746" r="4" fill="#f0e6c0" opacity="0.4" filter="url(#nodeGlow)"/>
+        <circle cx="620" cy="646" r="4" fill="#f0e6c0" opacity="0.4" filter="url(#nodeGlow)"/>
+        <circle cx="590" cy="546" r="4" fill="#f0e6c0" opacity="0.4" filter="url(#nodeGlow)"/>
+        <circle cx="630" cy="446" r="4" fill="#f0e6c0" opacity="0.4" filter="url(#nodeGlow)"/>
+        <circle cx="600" cy="346" r="4" fill="#f0e6c0" opacity="0.4" filter="url(#nodeGlow)"/>
+        <text x="600" y="265" text-anchor="middle" fill="#f0e6c0" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Nondual</text>
+        <text x="600" y="278" text-anchor="middle" fill="#f0e6c0" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="300" letter-spacing="0.5">Awareness</text>
+        <path d="M 580 880 C 610 830, 640 830, 610 780 C 580 730, 550 730, 580 680 C 610 630, 650 630, 620 580 C 590 530, 560 530, 590 480 C 620 430, 660 430, 630 380 C 600 330, 570 330, 600 280"
+              fill="none" stroke="transparent" stroke-width="24"/>
+      </g>
+
+      <!-- ==================== LEGEND ==================== -->
+      <line x1="140" y1="1010" x2="760" y2="1010" stroke="#333344" stroke-width="0.5" opacity="0.4"/>
+      <rect x="170" y="1025" width="20" height="8" rx="1" fill="#5b8ca8" opacity="0.4"/>
+      <text x="198" y="1033" fill="#667788" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" font-weight="300" letter-spacing="0.5">Cascade (dependency sequence)</text>
+      <line x1="430" y1="1029" x2="455" y2="1029" stroke="#2ecc71" stroke-width="1.5" opacity="0.7"/>
+      <line x1="430" y1="1029" x2="455" y2="1029" stroke="#c77dba" stroke-width="1.5" opacity="0.5" stroke-dasharray="4 3"/>
+      <text x="463" y="1033" fill="#667788" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="9" font-weight="300" letter-spacing="0.5">Orthogonal (weaves through all)</text>
+
+    </svg>
+
+    <!-- Info Panel -->
+    <div class="info-panel" id="infoPanel">
+      <button class="close-btn" id="closePanel">&times;</button>
+      <div class="dim-category" id="dimCategory"></div>
+      <div class="dim-name" id="dimName"></div>
+      <div class="dim-desc" id="dimDesc"></div>
+    </div>
+  </div>
+  <div class="hint" id="hint">Click any dimension to learn more</div>
+</div>
+
+<script>
+const dimensionData = {
+  'relational-field': {
+    category: 'Ground',
+    name: 'The Relational Field',
+    color: '#d4a843',
+    desc: 'The medium in which all healing occurs \u2014 presence, attunement, co-regulation, and witnessing. Not a technique but a condition. Without relational ground, the other dimensions cannot be safely contacted.'
+  },
+  'capacity-building': {
+    category: 'Foundation \u00b7 Cascade 1',
+    name: 'Capacity Building',
+    color: '#c0392b',
+    desc: 'Nervous system regulation and relational safety \u2014 the resources needed to enter difficult territory without overwhelm. Window of tolerance expansion, grounding, orienting, resourcing. The foundation everything else depends on.'
+  },
+  'physiological-completion': {
+    category: 'Body \u00b7 Cascade 2',
+    name: 'Physiological Completion',
+    color: '#d35400',
+    desc: 'Finishing thwarted survival responses the body still holds \u2014 incomplete fight, flight, freeze, fawn, collapse. The body must complete what was interrupted before higher-order processing becomes available.'
+  },
+  'affect-metabolization': {
+    category: 'Body \u2192 Psyche \u00b7 Cascade 3',
+    name: 'Affect Metabolization',
+    color: '#d4a017',
+    desc: 'Slowly digesting what couldn\'t be felt \u2014 grief under anger, terror under numbness, longing under self-sufficiency. Affects that were too much to process get stored; metabolization lets them finally move through.'
+  },
+  'differentiation': {
+    category: 'Psyche \u00b7 Cascade 4',
+    name: 'Differentiation',
+    color: '#6a9b5a',
+    desc: 'Distinguishing what was previously fused \u2014 past from present, part from whole self, feeling from story, awareness from content. The capacity to separate creates the space where insight and freedom emerge.'
+  },
+  'implicit-model-updating': {
+    category: 'Psyche \u00b7 Cascade 5',
+    name: 'Implicit Model Updating',
+    color: '#5b8ca8',
+    desc: 'Rewriting embodied predictions through corrective experience \u2014 old prediction active plus disconfirming experience plus awareness of mismatch equals lasting change. This is where deep repatterning happens.'
+  },
+  'identity-reorganization': {
+    category: 'Identity \u00b7 Cascade 6',
+    name: 'Identity Reorganization',
+    color: '#6c5b9e',
+    desc: 'Recovering the self that existed before or beneath the adaptations. Not who trauma made you \u2014 who you actually are. Identity shifts can be disorienting; this dimension honors the reorganization process.'
+  },
+  'shadow-integration': {
+    category: 'Wholeness \u00b7 Orthogonal',
+    name: 'Shadow Integration',
+    color: '#2ecc71',
+    desc: 'Re-owning what was banished from self-experience. Other dimensions work with what is stuck \u2014 shadow integration works with what is split off, actively excluded. It weaves through every level of the cascade.'
+  },
+  'energetic-reorganization': {
+    category: 'Subtle Body \u00b7 Orthogonal',
+    name: 'Energetic Reorganization',
+    color: '#c77dba',
+    desc: 'Felt-sense shifts between gross somatic and psychological meaning \u2014 maps as meridians, chakras, nadis. Requires soft, receptive attention. An orthogonal dimension that contacts every cascade level differently.'
+  },
+  'nondual-awareness': {
+    category: 'Awareness \u00b7 Orthogonal',
+    name: 'Nondual Awareness',
+    color: '#f0e6c0',
+    desc: 'The dimension of awareness itself \u2014 not as a technique but as the ever-present ground of experience. Recognition that awareness was never damaged, even when everything else was. Luminous, spacious, always already here.'
+  }
+};
+
+const groups = document.querySelectorAll('.dim-group');
+const panel = document.getElementById('infoPanel');
+const closeBtn = document.getElementById('closePanel');
+const hint = document.getElementById('hint');
+let activeId = null;
+
+function showDimension(id) {
+  const d = dimensionData[id];
+  if (!d) return;
+
+  activeId = id;
+
+  document.getElementById('dimCategory').textContent = d.category;
+  document.getElementById('dimCategory').style.color = d.color;
+  document.getElementById('dimName').textContent = d.name;
+  document.getElementById('dimName').style.color = d.color;
+  document.getElementById('dimDesc').textContent = d.desc;
+  panel.style.borderColor = d.color + '40';
+  panel.classList.add('active');
+  hint.style.opacity = '0';
+
+  // Dim all others, highlight selected
+  groups.forEach(g => {
+    const gid = g.getAttribute('data-dim');
+    if (gid === id) {
+      g.classList.add('highlighted');
+      g.classList.remove('dimmed');
+    } else {
+      g.classList.add('dimmed');
+      g.classList.remove('highlighted');
+    }
+  });
+}
+
+function clearSelection() {
+  activeId = null;
+  panel.classList.remove('active');
+  hint.style.opacity = '1';
+  groups.forEach(g => {
+    g.classList.remove('dimmed', 'highlighted');
+  });
+}
+
+groups.forEach(g => {
+  g.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const id = g.getAttribute('data-dim');
+    if (activeId === id) {
+      clearSelection();
+    } else {
+      showDimension(id);
+    }
+  });
+
+  // Hover preview (only when nothing is selected)
+  g.addEventListener('mouseenter', () => {
+    if (activeId) return;
+    groups.forEach(other => {
+      if (other !== g) other.classList.add('dimmed');
+    });
+    g.classList.add('highlighted');
+  });
+
+  g.addEventListener('mouseleave', () => {
+    if (activeId) return;
+    groups.forEach(other => {
+      other.classList.remove('dimmed', 'highlighted');
+    });
+  });
+});
+
+closeBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  clearSelection();
+});
+
+// Click background to deselect
+document.addEventListener('click', (e) => {
+  if (activeId && !panel.contains(e.target)) {
+    clearSelection();
+  }
+});
+</script>
+</body>
+</html>
