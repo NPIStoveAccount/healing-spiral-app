@@ -92,7 +92,8 @@ const MODS = {
   cenpr: "Centering Prayer",
   sufi: "Sufism / Whirling",
   kirtan: "Kirtan / Chanting",
-  yoga: "Yoga / Yoga Nidra",
+  yoga: "Yoga",
+  yoga_nidra: "Yoga Nidra",
   kundy: "Kundalini Yoga",
   hrid: "Hridaya Yoga",
   taichi: "Tai Chi / Qigong",
@@ -113,16 +114,38 @@ const MODS = {
   hoop: "Ho'oponopono",
   float: "Float Tanks",
   vns: "Vagus Nerve Stimulation",
-  ket: "Ketamine Therapy"
+  ket: "Ketamine Therapy",
+  post_retreat: "Post-Retreat Community",
+  jhana: "Jhana Meditation"
 };
 const MOD_KEYS = Object.keys(MODS).sort((a, b) => MODS[a].localeCompare(MODS[b]));
 
 /* ── Dimensions data using mod IDs ── */
+const mkX = (id, role) => ({
+  id,
+  name: MODS[id],
+  role
+}); // exemplary
 const mkE = (id, role) => ({
   id,
   name: MODS[id],
   role
 });
+const mkSE = (id, role) => ({
+  id,
+  name: MODS[id],
+  role
+}); // semi-effective
+const mkS = (id, role) => ({
+  id,
+  name: MODS[id],
+  role
+}); // sub-par / marginal
+const mkH = (id, reason) => ({
+  id,
+  name: MODS[id],
+  reason
+}); // harmful / undermines
 const mkI = (id, reason) => ({
   id,
   name: MODS[id],
@@ -137,9 +160,11 @@ const DIMS = [{
   colorL: C.gndL,
   short: "The medium in which all healing occurs",
   desc: "Not a dimension alongside the others but the ground of all healing. Quality of presence, attunement, co-regulation, and witnessing determines whether any other dimension shifts or is merely performed.",
-  eff: [mkE("step12", "Community, sponsorship, ongoing co-regulation"), mkE("men", "Deep witnessing, belonging, being seen by peers"), mkE("rc", "Peer exchange, co-attention, mutual presence"), mkE("circ", "Primary relational practice — present-moment group attunement"), mkE("nvc", "Empathic listening and authentic expression"), mkE("cuddle", "Direct co-regulation through safe, boundaried touch"), mkE("ci", "Relational attunement through movement"), mkE("eft", "Directly restructures attachment bonds"), mkE("grpther", "Relational field where interpersonal patterns emerge in real time"), mkE("hoop", "Forgiveness practice that heals relational ruptures")],
-  par: [mkE("ifs", "Depends on therapist attunement"), mkE("gestalt", "Strong in I-Thou contact; weaker in exercise-driven formats"), mkE("se", "Co-regulation through practitioner, but one-directional"), mkE("hakomi", "Therapist presence is central, but still a dyad"), mkE("fam", "Group resonance reveals dynamics, but facilitated not peer-based"), mkE("plant", "MDMA powerful for relational repair; quality varies"), mkE("nature", "Relationship with more-than-human — genuine but not interpersonal"), mkE("rhythms", "Shared movement creates group field"), mkE("drama", "Contact through theatrical distance"), mkE("sweat", "Shared ordeal builds bonding"), mkE("forum", "Intense bonding but manufactured intensity"), mkE("kirtan", "Group chanting creates communal resonance and shared vulnerability"), mkE("sm", "Therapist attunement in dyad; one-directional but embodied"), mkE("psychodyn", "Transference relationship provides relational field — structured")],
-  ineff: [mkI("talk", "Professional distance prevents genuine co-regulation"), mkI("exkink", "Primarily intrapsychic"), mkI("maha", "Solo practice; can reinforce withdrawal"), mkI("vip", "Solo practice; can reinforce withdrawal"), mkI("zen", "Solo practice; can reinforce withdrawal"), mkI("nlp", "Technique-focused, not relational"), mkI("emdr", "Intrapsychic processing"), mkI("cbt", "Skill-based, manualized"), mkI("nfb", "Human-machine interface"), mkI("float", "Solitary by design"), mkI("hypno", "Primarily intrapsychic; therapist-directed not relational"), mkI("ket", "Altered state is solo even when facilitated")]
+  ex: [mkX("step12", "Gold standard — community, sponsorship, ongoing co-regulation. The ambient relational field as healing infrastructure"), mkX("rc", "Gold standard — peer exchange, co-attention, mutual presence. Genuine bidirectional co-regulation by design")],
+  eff: [],
+  semi: [mkSE("men", "Deep witnessing, belonging, being seen by peers — powerful but episodic rather than ambient"), mkSE("nvc", "Empathic listening and authentic expression — builds relational skill but structured format can limit organic co-regulation"), mkSE("eft", "Restructures attachment bonds in the primary relationship — potent but narrow to the couple dyad"), mkSE("grpther", "Relational field where interpersonal patterns emerge in real time — professional frame limits full mutuality"), mkSE("hoop", "Forgiveness practice that heals relational ruptures — genuine but primarily intrapsychic mechanism"), mkSE("post_retreat", "Ongoing ambient relational field — the unconditional structure where repeated disconfirming exposure enables the deepest work")],
+  par: [mkE("circ", "Present-moment group attunement — powerful relational practice but facilitated format limits organic co-regulation"), mkE("gestalt", "Strong in I-Thou contact; weaker in exercise-driven formats"), mkE("hakomi", "Therapist presence is central, but still a dyad"), mkE("fam", "Group resonance reveals dynamics, but facilitated not peer-based"), mkE("nature", "Relationship with more-than-human — genuine but not interpersonal"), mkE("rhythms", "Shared movement creates group field"), mkE("drama", "Contact through theatrical distance"), mkE("forum", "Intense bonding but manufactured intensity"), mkE("kirtan", "Group chanting creates communal resonance and shared vulnerability"), mkE("cuddle", "Direct co-regulation through safe, boundaried touch — genuine but narrow range"), mkE("ci", "Relational attunement through movement — nonverbal but limited depth")],
+  ineff: [mkI("talk", "Professional distance prevents genuine co-regulation"), mkI("exkink", "Primarily intrapsychic"), mkI("maha", "Solo practice; can reinforce withdrawal"), mkI("vip", "Solo practice; can reinforce withdrawal"), mkI("zen", "Solo practice; can reinforce withdrawal"), mkI("nlp", "Technique-focused, not relational"), mkI("emdr", "Intrapsychic processing"), mkI("cbt", "Skill-based, manualized"), mkI("nfb", "Human-machine interface"), mkI("float", "Solitary by design"), mkI("hypno", "Primarily intrapsychic; therapist-directed not relational"), mkI("ket", "Altered state is solo even when facilitated"), mkI("plant", "Chemically mediated — relational repair requires sober relational context"), mkI("psychodyn", "Professional frame; transference is analyzed not lived as genuine co-regulation"), mkI("se", "Practitioner-client dyad is one-directional — not mutual co-regulation"), mkI("sm", "Therapist attunement in dyad but one-directional — client doesn't co-regulate the therapist"), mkI("sweat", "Shared ordeal but ceremonial structure limits genuine relational exchange"), mkI("jhana", "Solo practice; absorption states reinforce withdrawal from relational contact")]
 }, {
   id: "capacity",
   name: "Capacity Building",
@@ -149,9 +174,10 @@ const DIMS = [{
   colorL: C.accL,
   short: "Nervous system regulation + relational safety",
   desc: "The system needs enough resources to enter difficult territory without overwhelm. Both internal (pendulation) and external (relational safety). Scales with depth. Ongoing throughout the spiral.",
-  eff: [mkE("se", "Primary — grounding, resourcing, pendulation, titration"), mkE("tre", "Neurogenic tremoring gradually releases tension. Self-directed, accumulative"), mkE("yoga", "Breath, posture, interoception. Yoga Nidra trains settling between states"), mkE("nfb", "Directly trains nervous system regulation — unique mechanism"), mkE("rc", "Co-attention creates safety; structured turns build predictability"), mkE("step12", "Community holding; sponsorship as reliable co-regulation"), mkE("nature", "Nature as co-regulator — sensory grounding, resilience"), mkE("dbt", "Distress tolerance and emotion regulation skills"), mkE("taichi", "Slow regulated movement builds interoceptive awareness"), mkE("float", "Sensory reduction lets nervous system settle to baseline"), mkE("vns", "Direct toning of vagal pathways")],
-  par: [mkE("men", "Group containment helps, but some formats push intensity first"), mkE("maha", "Shamatha builds capacity; often taught too advanced"), mkE("vip", "Retreat structure provides container; can be too intense"), mkE("gestalt", "Body awareness helps, but privileges contact over resourcing"), mkE("cuddle", "Co-regulation through touch; doesn't develop self-regulation"), mkE("emres", "Resolves charge, but works by resolving not building"), mkE("massage", "Settles through touch; often temporary"), mkE("feld", "Somatic awareness indirectly supports regulation"), mkE("act", "Psychological flexibility — more cognitive than somatic"), mkE("wimhof", "Stress tolerance through controlled challenge"), mkE("cranio", "Gentle settling; helpful but passive"), mkE("sm", "Teaches body-based self-regulation within therapeutic frame"), mkE("hypno", "Trance induction builds capacity for state shifts; teaches self-regulation"), mkE("acu", "Regulates autonomic nervous system through meridian work"), mkE("martial", "Disciplined practice builds stress tolerance and body regulation"), mkE("eft", "Safe attachment provides co-regulation base in primary relationship")],
-  ineff: [mkI("talk", "Cognitive understanding but rarely nervous system capacity"), mkI("exkink", "Requires existing capacity — doesn't build it"), mkI("ifs", "Can map parts before system has enough ground"), mkI("plant", "Opens by chemical force rather than building regulation"), mkI("istdp", "Builds pressure, not capacity"), mkI("nlp", "Reframes cognition, doesn't develop somatic regulation"), mkI("fam", "Can surface overwhelming material before capacity exists"), mkI("holo", "Deliberately induces altered states — bypasses capacity building"), mkI("forum", "Can overwhelm through manufactured intensity"), mkI("cbt", "Cognitive tools, not nervous system development"), mkI("ket", "Chemical shortcut to altered state — doesn't build organic regulation"), mkI("kundy", "Can overwhelm capacity rather than build it")]
+  eff: [mkE("se", "Primary — grounding, resourcing, pendulation, titration"), mkE("tre", "Neurogenic tremoring gradually releases tension. Self-directed, accumulative"), mkE("yoga", "Breath, posture, interoception build regulation"), mkE("yoga_nidra", "Guided state between waking and sleeping trains deep settling — uniquely effective for capacity"), mkE("nfb", "Directly trains nervous system regulation — unique mechanism"), mkE("rc", "Co-attention creates safety; structured turns build predictability"), mkE("step12", "Community holding; sponsorship as reliable co-regulation"), mkE("nature", "Nature as co-regulator — sensory grounding, resilience"), mkE("dbt", "Distress tolerance and emotion regulation skills"), mkE("taichi", "Slow regulated movement builds interoceptive awareness"), mkE("float", "Sensory reduction lets nervous system settle to baseline"), mkE("vns", "Direct toning of vagal pathways"), mkE("post_retreat", "Ongoing community container provides the sustained safety that lets the nervous system gradually expand its window of tolerance"), mkE("jhana", "Progressive absorption states train the nervous system to settle deeply — builds organic capacity through pleasure rather than effort")],
+  par: [mkE("men", "Group containment helps, but some formats push intensity first"), mkE("maha", "Shamatha builds capacity; often taught too advanced"), mkE("vip", "Retreat structure provides container; can be too intense"), mkE("gestalt", "Body awareness helps, but privileges contact over resourcing"), mkE("cuddle", "Co-regulation through touch; doesn't develop self-regulation"), mkE("emres", "Resolves charge, but works by resolving not building"), mkE("massage", "Settles through touch; often temporary"), mkE("feld", "Somatic awareness indirectly supports regulation"), mkE("act", "Psychological flexibility — more cognitive than somatic"), mkE("wimhof", "Stress tolerance through controlled challenge"), mkE("cranio", "Gentle settling; helpful but passive"), mkE("sm", "Teaches body-based self-regulation within therapeutic frame"), mkE("hypno", "Trance induction builds capacity for state shifts; teaches self-regulation"), mkE("acu", "Regulates autonomic nervous system through meridian work"), mkE("martial", "Disciplined practice builds stress tolerance and body regulation"), mkE("eft", "Safe attachment provides co-regulation base in primary relationship"), mkE("exkink", "Meeting shadow material with willingness builds tolerance for difficult internal states")],
+  ineff: [mkI("talk", "Cognitive understanding but rarely nervous system capacity"), mkI("ifs", "Can map parts before system has enough ground"), mkI("istdp", "Builds pressure, not capacity"), mkI("nlp", "Reframes cognition, doesn't develop somatic regulation"), mkI("fam", "Can surface overwhelming material before capacity exists"), mkI("holo", "Deliberately induces altered states — bypasses capacity building"), mkI("forum", "Can overwhelm through manufactured intensity"), mkI("cbt", "Cognitive tools, not nervous system development"), mkI("kundy", "Can overwhelm capacity rather than build it")],
+  harm: [mkH("ket", "Chemical override of nervous system regulation — repeated use erodes the system's ability to self-regulate, building dependence on external state-change rather than organic capacity"), mkH("plant", "Opens by chemical force rather than building regulation — can destabilize existing capacity, leaving the system more dysregulated than before if integration is insufficient")]
 }, {
   id: "completion",
   name: "Physiological Completion",
@@ -162,8 +188,8 @@ const DIMS = [{
   short: "Finishing thwarted survival responses",
   desc: "The body holds incomplete fight, flight, freeze, fawn, collapse. Completion means finishing what was started. Different from catharsis: genuine completion produces spontaneous settling and a new baseline.",
   eff: [mkE("se", "Primary — tracking impulses, completing with titration"), mkE("sm", "Tracks and completes somatic sequences with cognitive integration"), mkE("biocore", "Direct work with muscular armoring and expressive bodywork"), mkE("rc", "Discharge: trembling, crying, laughing, raging, yawning"), mkE("tre", "Body's natural shaking response. Simple, self-directed"), mkE("gestalt", "Body awareness, here-and-now tracking, permission for expression")],
-  par: [mkE("men", "Physical expression with holding — often lacks titration"), mkE("ifs", "Can facilitate body response when accessing exiles"), mkE("plant", "Powerful somatic releases but chemically paced"), mkE("yoga", "Trauma-sensitive yoga allows movement through stuck patterns"), mkE("emdr", "Can unlock frozen responses during reprocessing"), mkE("holo", "Powerful activation — intensity can overwhelm"), mkE("rolf", "Fascial work releases patterns — mechanical rather than autonomic"), mkE("rhythms", "Free movement can access stuck impulses"), mkE("hakomi", "Mindful tracking facilitates completion through experiments"), mkE("drama", "Enactment can complete thwarted responses"), mkE("ci", "Free movement may facilitate if impulse arises"), mkE("martial", "Training fight responses can complete self-defense impulses"), mkE("massage", "Deep tissue can release held patterns — lacks autonomic tracking"), mkE("feld", "Somatic awareness reveals held patterns — indirect completion"), mkE("cranio", "Subtle unwinding at tissue level — very gentle completion"), mkE("ket", "Can unlock frozen states; lacks body's own pacing")],
-  ineff: [mkI("talk", "Narrative cannot complete thwarted fight/flight"), mkI("cbt", "Cognitive — doesn't reach physiology"), mkI("exkink", "Meaning/identity level"), mkI("maha", "Observation without completion freezes body in witness mode"), mkI("vip", "Noting without completing"), mkI("zen", "Sitting without completing"), mkI("step12", "No somatic mechanism"), mkI("nvc", "Communication framework"), mkI("nlp", "Cognitive layer"), mkI("istdp", "Bypasses body's own timing"), mkI("jung", "Image and symbol — doesn't reach somatic layer"), mkI("nfb", "Trains regulation, not specific completion"), mkI("hypno", "Trance bypasses body's autonomous completion timing")]
+  par: [mkE("men", "Physical expression with holding — often lacks titration"), mkE("ifs", "Can facilitate body response when accessing exiles"), mkE("yoga", "Trauma-sensitive yoga allows movement through stuck patterns"), mkE("emdr", "Can unlock frozen responses during reprocessing"), mkE("holo", "Powerful activation — intensity can overwhelm"), mkE("rolf", "Fascial work releases patterns — mechanical rather than autonomic"), mkE("rhythms", "Free movement can access stuck impulses"), mkE("hakomi", "Mindful tracking facilitates completion through experiments"), mkE("drama", "Enactment can complete thwarted responses"), mkE("ci", "Free movement may facilitate if impulse arises"), mkE("martial", "Training fight responses can complete self-defense impulses"), mkE("massage", "Deep tissue can release held patterns — lacks autonomic tracking"), mkE("feld", "Somatic awareness reveals held patterns — indirect completion"), mkE("cranio", "Subtle unwinding at tissue level — very gentle completion")],
+  ineff: [mkI("talk", "Narrative cannot complete thwarted fight/flight"), mkI("cbt", "Cognitive — doesn't reach physiology"), mkI("exkink", "Meaning/identity level"), mkI("maha", "Observation without completion freezes body in witness mode"), mkI("vip", "Noting without completing"), mkI("zen", "Sitting without completing"), mkI("step12", "No somatic mechanism"), mkI("nvc", "Communication framework"), mkI("nlp", "Cognitive layer"), mkI("istdp", "Bypasses body's own timing"), mkI("jung", "Image and symbol — doesn't reach somatic layer"), mkI("nfb", "Trains regulation, not specific completion"), mkI("hypno", "Trance bypasses body's autonomous completion timing"), mkI("ket", "Dissociative mechanism bypasses the body's own completion pacing — chemical override, not organic completion"), mkI("yoga_nidra", "Deep relaxation practice — no somatic completion mechanism"), mkI("jhana", "Concentration practice — no somatic completion mechanism")]
 }, {
   id: "affect",
   name: "Affect Metabolization",
@@ -173,9 +199,9 @@ const DIMS = [{
   colorL: C.somL,
   short: "Slowly digesting what couldn't be felt",
   desc: "Frozen material surfaces — grief under anger, terror under numbness, longing under self-sufficiency. Metabolization is sustained conscious contact: not acting out, not analyzing, not transcending. Comes in waves.",
-  eff: [mkE("gestalt", "Primary — present-moment aliveness, permission for full feeling"), mkE("rc", "Discharge as emotional release; attention underneath patterns"), mkE("ifs", "Accessing exiles, witnessing with Self-energy"), mkE("men", "Full emotional range with group witnessing"), mkE("biocore", "Bodywork opens armoring, directly releasing held affect"), mkE("istdp", "Designed to break through defenses to core affect"), mkE("hakomi", "Gentle access through somatic awareness and relational safety"), mkE("music", "Sound accesses emotion words can't reach"), mkE("art", "Visual expression bypasses verbal defenses")],
-  par: [mkE("se", "Tracks waves but may lack psychological framework"), mkE("sm", "Integrates cognitive but somatic-first"), mkE("step12", "Step 4-5 surfaces affect but doesn't emphasize staying"), mkE("plant", "Surfaces overwhelming amounts. MDMA helps. Flood not titration"), mkE("emres", "Resolves charge — may resolve before fully felt"), mkE("circ", "Real-time contact metabolizes relational emotions"), mkE("emdr", "Facilitates processing indirectly"), mkE("fam", "Surfaces intergenerational affect; single session limits"), mkE("nature", "Nature holds big emotions"), mkE("holo", "Deep material through altered states — can overwhelm"), mkE("rhythms", "Movement accesses emotion below verbal level"), mkE("jung", "Active imagination accesses deep affect through image"), mkE("psychodyn", "Transference surfaces relational affect slowly"), mkE("drama", "Theatrical frame makes unbearable feelings approachable"), mkE("kirtan", "Opens heart, surfaces grief and longing"), mkE("sweat", "Ordeal cracks open armoring"), mkE("ket", "Breaks through depressive freeze; opens emotional access temporarily"), mkE("hypno", "Regression accesses frozen affect; therapist-paced not organism-paced"), mkE("yoga", "Certain postures and breathwork surface held emotions"), mkE("grpther", "Group dynamics surface relational emotions in real time")],
-  ineff: [mkI("talk", "Discusses feelings about feelings — intellectual distance"), mkI("cbt", "Cognitive restructuring, not metabolization"), mkI("exkink", "Reframes rather than metabolizes"), mkI("maha", "Noting rather than feeling — awareness as avoidance"), mkI("vip", "Same risk as Mahamudra"), mkI("zen", "Same risk"), mkI("nlp", "Rapidly reframes rather than allowing feeling"), mkI("nvc", "Names feelings but doesn't facilitate metabolization"), mkI("dbt", "Manages affect, not metabolizes"), mkI("act", "Acceptance sidesteps metabolization"), mkI("nfb", "Regulates but doesn't access specific material"), mkI("float", "Sensory reduction — no emotional access mechanism")]
+  eff: [mkE("gestalt", "Primary — present-moment aliveness, permission for full feeling"), mkE("rc", "Discharge as emotional release; attention underneath patterns"), mkE("ifs", "Accessing exiles, witnessing with Self-energy"), mkE("men", "Full emotional range with group witnessing"), mkE("biocore", "Bodywork opens armoring, directly releasing held affect"), mkE("istdp", "Designed to break through defenses to core affect"), mkE("hakomi", "Gentle access through somatic awareness and relational safety"), mkE("music", "Sound accesses emotion words can't reach"), mkE("art", "Visual expression bypasses verbal defenses"), mkE("exkink", "Contacting the hidden wanting underneath resistance surfaces genuine affect — the desire IS the unfelt feeling, met directly rather than obliquely")],
+  par: [mkE("se", "Tracks waves but may lack psychological framework"), mkE("sm", "Integrates cognitive but somatic-first"), mkE("emres", "Resolves charge — may resolve before fully felt"), mkE("circ", "Real-time contact metabolizes relational emotions"), mkE("emdr", "Facilitates processing indirectly"), mkE("fam", "Surfaces intergenerational affect; single session limits"), mkE("nature", "Nature holds big emotions"), mkE("holo", "Deep material through altered states — can overwhelm"), mkE("rhythms", "Movement accesses emotion below verbal level"), mkE("jung", "Active imagination accesses deep affect through image"), mkE("psychodyn", "Transference surfaces relational affect slowly"), mkE("drama", "Theatrical frame makes unbearable feelings approachable"), mkE("kirtan", "Opens heart, surfaces grief and longing"), mkE("sweat", "Ordeal cracks open armoring"), mkE("hypno", "Regression accesses frozen affect; therapist-paced not organism-paced"), mkE("yoga", "Certain postures and breathwork surface held emotions"), mkE("grpther", "Group dynamics surface relational emotions in real time")],
+  ineff: [mkI("talk", "Discusses feelings about feelings — intellectual distance"), mkI("cbt", "Cognitive restructuring, not metabolization"), mkI("maha", "Noting rather than feeling — awareness as avoidance"), mkI("vip", "Same risk as Mahamudra"), mkI("zen", "Same risk"), mkI("nlp", "Rapidly reframes rather than allowing feeling"), mkI("nvc", "Names feelings but doesn't facilitate metabolization"), mkI("dbt", "Manages affect, not metabolizes"), mkI("act", "Acceptance sidesteps metabolization"), mkI("nfb", "Regulates but doesn't access specific material"), mkI("float", "Sensory reduction — no emotional access mechanism"), mkI("step12", "Surfaces affect through inventory and amends but format doesn't emphasize sustained contact with feeling"), mkI("ket", "Dissociative mechanism bypasses rather than metabolizes — emotional access is chemical not organic"), mkI("yoga_nidra", "Settles below the level of emotional contact — bypasses rather than metabolizes"), mkI("jhana", "Moves away from emotional content by design — absorption bypasses rather than metabolizes affect"), mkI("plant", "Surfaces overwhelming amounts by chemical force — flood rather than titration, and chemically paced rather than organism-paced")]
 }, {
   id: "diff",
   name: "Differentiation",
@@ -185,9 +211,11 @@ const DIMS = [{
   colorL: C.psyL,
   short: "Distinguishing what was previously fused",
   desc: "Past from present. Part from whole self. Feeling from story. Awareness from content. Increased space between stimulus and response. Without somatic/affect work first, becomes mere intellectual mapping.",
-  eff: [mkE("ifs", "Primary — unblending from parts, Self from protectors and exiles"), mkE("gestalt", "Contact boundaries, figure/ground, self vs. environment"), mkE("maha", "Most radical — awareness from all content"), mkE("vip", "Noting builds fine-grained differentiation"), mkE("dzog", "Rigpa from sem"), mkE("zen", "Koans develop radical clarity"), mkE("rc", "'Pattern is not the person'"), mkE("real", "Embodied nondual — ground of being from content while in body"), mkE("nvc", "Observations vs. evaluations, feelings vs. thoughts, needs vs. strategies"), mkE("hakomi", "Precise tracking: sensation, feeling, impulse, belief as distinct")],
-  par: [mkE("talk", "Cognitive distinctions without felt-sense remain abstract"), mkE("psychodyn", "Builds distinction through interpretation — slow"), mkE("se", "Body tracking supports differentiation but lacks structural map"), mkE("emdr", "Creates distance from traumatic memories — byproduct"), mkE("emres", "Tracking sensations distinct from narratives"), mkE("fam", "'Mine' vs. inherited — intergenerational differentiation"), mkE("jung", "Ego from shadow, persona from Self"), mkE("cbt", "Thoughts vs. facts — limited to cognitive layer"), mkE("act", "Cognitive defusion — thoughts as thoughts"), mkE("dbt", "Wise mind: emotional vs. rational"), mkE("feld", "Fine-grained somatic: habitual vs. novel, effort vs. ease"), mkE("sm", "Separating somatic experience from emotional narrative"), mkE("hypno", "Trance states can distinguish subconscious from conscious patterns"), mkE("adv", "Self-inquiry distinguishes awareness from content")],
-  ineff: [mkI("step12", "'I am an addict' fuses identity with pattern"), mkI("men", "Group intensity can blur boundaries"), mkI("exkink", "Collapses distinctions — useful later, counterproductive here"), mkI("plant", "Dissolves boundaries — de-differentiation"), mkI("nlp", "Reframes without felt-sense foundation"), mkI("istdp", "Intensity blurs rather than clarifies"), mkI("biocore", "Catharsis can overwhelm distinction-making"), mkI("holo", "Altered states dissolve boundaries"), mkI("forum", "Group pressure blurs self/other"), mkI("ket", "De-differentiating by design — dissolves boundaries")]
+  ex: [mkX("ifs", "Gold standard — unblending from parts, Self from protectors and exiles. The most precise technology for distinguishing self from parts"), mkX("rc", "Gold standard — 'the pattern is not the person.' Structural differentiation of identity from distress, built into the practice at every level")],
+  semi: [mkSE("jhana", "Progressive jhanas naturally produce fine-grained differentiation — thought from awareness, pleasure from observer of pleasure. 4th jhana is radical stillness where content and awareness are clearly distinct")],
+  eff: [mkE("gestalt", "Contact boundaries, figure/ground, self vs. environment"), mkE("maha", "Most radical — awareness from all content"), mkE("vip", "Noting builds fine-grained differentiation"), mkE("dzog", "Rigpa from sem"), mkE("zen", "Koans develop radical clarity"), mkE("real", "Embodied nondual — ground of being from content while in body"), mkE("nvc", "Observations vs. evaluations, feelings vs. thoughts, needs vs. strategies"), mkE("hakomi", "Precise tracking: sensation, feeling, impulse, belief as distinct"), mkE("exkink", "Distinguishes wanting from having, desire from identification with the desirer — radical differentiation of self from self-concept")],
+  par: [mkE("talk", "Cognitive distinctions without felt-sense remain abstract"), mkE("psychodyn", "Builds distinction through interpretation — slow"), mkE("se", "Body tracking supports differentiation but lacks structural map"), mkE("emdr", "Creates distance from traumatic memories — byproduct"), mkE("emres", "Tracking sensations distinct from narratives"), mkE("fam", "'Mine' vs. inherited — intergenerational differentiation"), mkE("jung", "Ego from shadow, persona from Self"), mkE("cbt", "Thoughts vs. facts — limited to cognitive layer"), mkE("act", "Cognitive defusion — thoughts as thoughts"), mkE("dbt", "Wise mind: emotional vs. rational"), mkE("feld", "Fine-grained somatic: habitual vs. novel, effort vs. ease"), mkE("sm", "Separating somatic experience from emotional narrative"), mkE("hypno", "Trance states can distinguish subconscious from conscious patterns"), mkE("adv", "Self-inquiry distinguishes awareness from content"), mkE("step12", "Step 4 inventory distinguishes pattern from person; amends distinguish past from present behavior")],
+  ineff: [mkI("men", "Group intensity can blur boundaries"), mkI("plant", "Dissolves boundaries — de-differentiation"), mkI("nlp", "Reframes without felt-sense foundation"), mkI("istdp", "Intensity blurs rather than clarifies"), mkI("biocore", "Catharsis can overwhelm distinction-making"), mkI("holo", "Altered states dissolve boundaries"), mkI("forum", "Group pressure blurs self/other"), mkI("ket", "De-differentiating by design — dissolves boundaries")]
 }, {
   id: "models",
   name: "Implicit Model Updating",
@@ -197,9 +225,10 @@ const DIMS = [{
   colorL: C.psyL,
   short: "Rewriting embodied predictions through corrective experience",
   desc: "Old prediction active + disconfirming experience + awareness of mismatch = lasting change. This is why insight alone doesn't heal and relational field is central.",
-  eff: [mkE("step12", "Amends as corrective relational experience; community disconfirms isolation"), mkE("ifs", "Self meets parts with what they needed; updates exile beliefs"), mkE("men", "Vulnerability met with presence; discovering belonging"), mkE("circ", "Real-time contact continuously disconfirms old predictions"), mkE("emdr", "Memory reconsolidation directly updates encodings — strong evidence"), mkE("fam", "Reveals and reorganizes inherited relational models"), mkE("eft", "Corrective attachment in the primary relationship"), mkE("psychodyn", "Working through transference — old model met with something new"), mkE("grpther", "Interpersonal patterns worked in real time with multiple others")],
+  ex: [mkX("ifs", "Gold standard — Self meets parts with what they needed. Directly activates old prediction and provides corrective experience within the same session")],
+  eff: [mkE("step12", "Amends as corrective relational experience; community disconfirms isolation"), mkE("men", "Vulnerability met with presence; discovering belonging"), mkE("circ", "Real-time contact continuously disconfirms old predictions"), mkE("emdr", "Memory reconsolidation directly updates encodings — strong evidence"), mkE("fam", "Reveals and reorganizes inherited relational models"), mkE("eft", "Corrective attachment in the primary relationship"), mkE("psychodyn", "Working through transference — old model met with something new"), mkE("grpther", "Interpersonal patterns worked in real time with multiple others"), mkE("exkink", "Discovering hidden wanting behind resistance directly disconfirms the prediction 'I don't want this' — lived corrective experience at the level of desire itself")],
   par: [mkE("gestalt", "Experiments create corrective experience; depends on context"), mkE("rc", "Peer presence disconfirms; format limits depth"), mkE("se", "Practitioner's presence implicitly corrects attachment predictions"), mkE("plant", "MDMA: ideal reconsolidation conditions. Must consolidate sober"), mkE("cuddle", "Updates touch/vulnerability predictions — limited range, potent"), mkE("nvc", "New patterns create corrective experience — can be formulaic"), mkE("nlp", "Rapidly reframes beliefs — real but shallow"), mkE("hakomi", "Missing experience experiments provide what was absent"), mkE("drama", "Role reversal creates corrective experience"), mkE("hoop", "Updates models about rupture and repair"), mkE("ci", "Physical trust updates safety predictions"), mkE("forum", "Powerful breakthroughs — manufactured context may not transfer"), mkE("hypno", "Suggestion can reframe beliefs; reconsolidation-adjacent under trance"), mkE("ket", "Neuroplasticity window enables model updating; must integrate sober"), mkE("art", "Creating new images of self and relationship updates predictions indirectly"), mkE("sm", "Corrective somatic experience updates body-level predictions")],
-  ineff: [mkI("talk", "Insight doesn't update embodied predictions"), mkI("cbt", "Knowing doesn't change body's prediction"), mkI("maha", "Transcends rather than updates — predictions unchanged"), mkI("vip", "Equanimity overlays unchanged predictions"), mkI("zen", "Same issue"), mkI("exkink", "Reframes without corrective relational experience"), mkI("tre", "Releases tension but not relational"), mkI("nfb", "Trains regulation, not specific predictions"), mkI("jung", "Symbolic without lived corrective experience"), mkI("float", "No relational corrective mechanism")]
+  ineff: [mkI("talk", "Insight doesn't update embodied predictions"), mkI("cbt", "Knowing doesn't change body's prediction"), mkI("maha", "Transcends rather than updates — predictions unchanged"), mkI("vip", "Equanimity overlays unchanged predictions"), mkI("zen", "Same issue"), mkI("tre", "Releases tension but not relational"), mkI("nfb", "Trains regulation, not specific predictions"), mkI("jung", "Symbolic without lived corrective experience"), mkI("float", "No relational corrective mechanism"), mkI("jhana", "Transcends rather than updates — embodied predictions unchanged by absorption states")]
 }, {
   id: "identity",
   name: "Identity Reorganization",
@@ -210,8 +239,8 @@ const DIMS = [{
   short: "Letting old self-structures dissolve",
   desc: "As enough implicit models update, the identity they supported loses coherence. 'The wounded one,' 'the strong one,' 'the helper' dissolve. Can't be forced — premature attempts produce spiritual bypass. Two levels: structural loosening (specific identities soften — 'the achiever' starts feeling like a strategy) and, more rarely, dissolution of the identity project itself (questions like 'am I enough?' stop being live questions rather than getting better answers). The second tends to emerge naturally when enough cascade work has been done.",
   eff: [mkE("step12", "Surrender — letting go of ego's control, Steps 1-3"), mkE("exkink", "Exposes shadow investment in old identity"), mkE("maha", "All identity structures as fixations of awareness"), mkE("dzog", "Self-liberation as practice"), mkE("men", "Initiatory processes; dying to old self in community"), mkE("real", "Embodied nondual — dissolves identification while in body"), mkE("jung", "Individuation: shadow, anima/animus, Self"), mkE("zen", "Koans systematically break conceptual identity"), mkE("adv", "Direct self-inquiry dissolves identification"), mkE("vision", "Solo wilderness ordeal as death and rebirth")],
-  par: [mkE("ifs", "Unburdening updates parts but not always the larger structure"), mkE("gestalt", "Can facilitate shifts but lacks explicit framework"), mkE("plant", "Powerful ego dissolution — catalytic with prior work; risk of new identity"), mkE("nature", "Soulcraft tradition works identity through nature"), mkE("fam", "Dissolves identification with family roles"), mkE("vip", "Insight into anatta — often stays intellectual"), mkE("holo", "Can produce ego dissolution — same caveats as plant medicine"), mkE("sufi", "Fana — ego annihilation through love"), mkE("cenpr", "Christian contemplative surrender through devotion"), mkE("sweat", "Ceremonial death and rebirth"), mkE("psychodyn", "Long-term analysis can produce transformation — slow"), mkE("ket", "Ego dissolution through dissociation — powerful but chemical"), mkE("hrid", "Heart opening can dissolve identity through love"), mkE("kundy", "Kundalini rising can shatter identity structures — uncontrolled"), mkE("art", "Creative identity exploration — becoming through making"), mkE("music", "Voice work can crack open persona; singing as someone else")],
-  ineff: [mkI("talk", "Reinforces coherent narrative identity"), mkI("cbt", "Works within existing identity"), mkI("rc", "Pattern removal doesn't address deeper structure"), mkI("se", "Below identity level — preparation not dissolution"), mkI("nlp", "Installs new identity rather than dissolution"), mkI("nvc", "Communication framework"), mkI("emdr", "Reprocesses memories not architecture"), mkI("tre", "Far below identity level"), mkI("emres", "Resolves charge not identity"), mkI("dbt", "Skill-building within existing identity"), mkI("nfb", "No identity mechanism"), mkI("hypno", "Can install new identity narratives but not genuine dissolution")]
+  par: [mkE("ifs", "Unburdening updates parts but not always the larger structure"), mkE("gestalt", "Can facilitate shifts but lacks explicit framework"), mkE("plant", "Powerful ego dissolution — catalytic with prior work; risk of new identity"), mkE("nature", "Soulcraft tradition works identity through nature"), mkE("fam", "Dissolves identification with family roles"), mkE("vip", "Insight into anatta — often stays intellectual"), mkE("holo", "Can produce ego dissolution — same caveats as plant medicine"), mkE("sufi", "Fana — ego annihilation through love"), mkE("cenpr", "Christian contemplative surrender through devotion"), mkE("sweat", "Ceremonial death and rebirth"), mkE("psychodyn", "Long-term analysis can produce transformation — slow"), mkE("hrid", "Heart opening can dissolve identity through love"), mkE("kundy", "Kundalini rising can shatter identity structures — uncontrolled"), mkE("art", "Creative identity exploration — becoming through making"), mkE("music", "Voice work can crack open persona; singing as someone else"), mkE("jhana", "Deep jhanas and formless attainments produce ego dissolution — powerful but state-dependent, doesn't always restructure identity permanently")],
+  ineff: [mkI("talk", "Reinforces coherent narrative identity"), mkI("cbt", "Works within existing identity"), mkI("rc", "Pattern removal doesn't address deeper structure"), mkI("se", "Below identity level — preparation not dissolution"), mkI("nlp", "Installs new identity rather than dissolution"), mkI("nvc", "Communication framework"), mkI("emdr", "Reprocesses memories not architecture"), mkI("tre", "Far below identity level"), mkI("emres", "Resolves charge not identity"), mkI("dbt", "Skill-building within existing identity"), mkI("nfb", "No identity mechanism"), mkI("hypno", "Can install new identity narratives but not genuine dissolution"), mkI("ket", "Ego dissolution through chemical dissociation — powerful experience but doesn't produce lasting structural change without contemplative infrastructure")]
 }, {
   id: "energetic",
   name: "Energetic Reorganization",
@@ -220,10 +249,10 @@ const DIMS = [{
   color: C.eng,
   colorL: C.engL,
   short: "Felt-sense shifts between gross somatic and psychological meaning",
-  desc: "More granular than muscular tension, more embodied than parts. Maps as meridians, chakras, nadis. Operates independently — sometimes preceding, following, or catalyzing the cascade. Requires soft, receptive attention. A note on epistemological honesty: eight dimensions of this framework have mechanisms that can be named. This one can only be described phenomenologically. It is included because the experience is real and clinically significant, not because it is as well understood as the others.",
-  eff: [mkE("se", "Felt-sense tracking at subtle level — Levine's 'felt sense'"), mkE("maha", "Tsa lung, tummo — explicit channels and winds"), mkE("biocore", "Directly works with energetic blocks and character as energy pattern"), mkE("plant", "Strongest catalyst for subtle body shifts — traditional contexts understand this"), mkE("hrid", "Heart-centered subtle energy and nondual awareness"), mkE("yoga", "Pranayama works with prana; Yoga Nidra accesses subtle states"), mkE("kundy", "Specifically targets energetic awakening"), mkE("real", "Subtle internal space of body as ground of being"), mkE("acu", "Directly works meridian system — thousands of years refined"), mkE("taichi", "Qi cultivation through intentional movement"), mkE("cranio", "Subtle rhythms and fluid dynamics — extremely gentle")],
-  par: [mkE("gestalt", "Felt-sense tracking can touch this when refined"), mkE("rc", "Discharge occasionally touches energetic shifts"), mkE("men", "Group field produces shifts — typically unrecognized"), mkE("tre", "Tremoring can release energetic blocks as side effect"), mkE("holo", "Powerful energetic activation — kundalini phenomena — uncontrolled"), mkE("rolf", "Fascial work releases energy — piezoelectric properties"), mkE("rhythms", "Free movement opens energy channels"), mkE("hakomi", "Subtle awareness embedded but not explicitly named"), mkE("wimhof", "Strong energetic sensations — physiological not energetic framework"), mkE("massage", "Thai massage works energy lines; western releases through tissue"), mkE("float", "Sensory reduction increases subtle awareness — passive"), mkE("sufi", "Whirling as subtle body practice"), mkE("ci", "Subtle energy exchange between bodies"), mkE("nature", "Attuning to natural energies — felt sense of place"), mkE("ket", "Can produce strong energetic phenomena — dissociative not integrative"), mkE("kirtan", "Sound vibration resonates through subtle body — devotional energy"), mkE("martial", "Internal martial arts cultivate and direct qi"), mkE("feld", "Somatic awareness at subtle level bridges gross and energetic")],
-  ineff: [mkI("talk", "Cognitive — no subtle body access"), mkI("cbt", "No subtle body access"), mkI("psychodyn", "Cognitive/symbolic level"), mkI("ifs", "Psychological not energetic"), mkI("step12", "No mechanism"), mkI("exkink", "Meaning/identity level"), mkI("nvc", "Communication framework"), mkI("nlp", "Cognitive repatterning"), mkI("emdr", "Neurological not energetic"), mkI("istdp", "Emotional breakthrough — no energetic dimension"), mkI("dbt", "Skill-based"), mkI("nfb", "Neural not energetic"), mkI("jung", "Symbolic — doesn't directly address subtle body"), mkI("hypno", "Works through suggestion not energetic channels")]
+  desc: "More granular than muscular tension, more embodied than parts. Maps as meridians, chakras, nadis. Operates independently — sometimes preceding, following, or catalyzing the cascade. Requires soft, receptive attention. A note on epistemological honesty: nine dimensions of this framework have mechanisms that can be named. This one can only be described phenomenologically. It is included because the experience is real and clinically significant, not because it is as well understood as the others.",
+  eff: [mkE("se", "Felt-sense tracking at subtle level — Levine's 'felt sense'"), mkE("maha", "Tsa lung, tummo — explicit channels and winds"), mkE("biocore", "Directly works with energetic blocks and character as energy pattern"), mkE("plant", "Strongest catalyst for subtle body shifts — traditional contexts understand this"), mkE("hrid", "Heart-centered subtle energy and nondual awareness"), mkE("yoga", "Pranayama works with prana directly"), mkE("yoga_nidra", "Accesses subtle states between waking and sleeping — natural gateway to energetic awareness"), mkE("kundy", "Specifically targets energetic awakening"), mkE("real", "Subtle internal space of body as ground of being"), mkE("acu", "Directly works meridian system — thousands of years refined"), mkE("taichi", "Qi cultivation through intentional movement"), mkE("cranio", "Subtle rhythms and fluid dynamics — extremely gentle")],
+  par: [mkE("gestalt", "Felt-sense tracking can touch this when refined"), mkE("rc", "Discharge occasionally touches energetic shifts"), mkE("men", "Group field produces shifts — typically unrecognized"), mkE("tre", "Tremoring can release energetic blocks as side effect"), mkE("holo", "Powerful energetic activation — kundalini phenomena — uncontrolled"), mkE("rolf", "Fascial work releases energy — piezoelectric properties"), mkE("rhythms", "Free movement opens energy channels"), mkE("hakomi", "Subtle awareness embedded but not explicitly named"), mkE("wimhof", "Strong energetic sensations — physiological not energetic framework"), mkE("massage", "Thai massage works energy lines; western releases through tissue"), mkE("float", "Sensory reduction increases subtle awareness — passive"), mkE("sufi", "Whirling as subtle body practice"), mkE("ci", "Subtle energy exchange between bodies"), mkE("nature", "Attuning to natural energies — felt sense of place"), mkE("ket", "Can produce strong energetic phenomena — dissociative not integrative"), mkE("kirtan", "Sound vibration resonates through subtle body — devotional energy"), mkE("martial", "Internal martial arts cultivate and direct qi"), mkE("feld", "Somatic awareness at subtle level bridges gross and energetic"), mkE("jhana", "Strong energetic phenomena — rapture, bliss, piti — are core features of first two jhanas"), mkE("exkink", "Owning disowned desire can produce felt energetic shifts — charge that was bound in repression releases when the wanting is welcomed")],
+  ineff: [mkI("talk", "Cognitive — no subtle body access"), mkI("cbt", "No subtle body access"), mkI("psychodyn", "Cognitive/symbolic level"), mkI("ifs", "Psychological not energetic"), mkI("step12", "No mechanism"), mkI("nvc", "Communication framework"), mkI("nlp", "Cognitive repatterning"), mkI("emdr", "Neurological not energetic"), mkI("istdp", "Emotional breakthrough — no energetic dimension"), mkI("dbt", "Skill-based"), mkI("nfb", "Neural not energetic"), mkI("jung", "Symbolic — doesn't directly address subtle body"), mkI("hypno", "Works through suggestion not energetic channels")]
 }, {
   id: "shadow",
   name: "Shadow Integration / Integrity",
@@ -233,9 +262,10 @@ const DIMS = [{
   colorL: C.shdL,
   short: "Re-owning what was banished from self-experience",
   desc: "Other dimensions work with what's stuck. Shadow integration works with what's split off — actively excluded from self-experience. The mechanism isn't completion or metabolization but re-owning. Integrity as structural wholeness: nothing left out. At every level of the cascade, there's material that was forbidden rather than merely unfelt.",
-  eff: [mkE("exkink", "Primary — makes conscious the hidden desire in what you claim to not want"), mkE("jung", "Classical shadow tradition; shadow, anima/animus, individuation"), mkE("ifs", "Shadow work through exile access; exiled parts ARE the shadow, Self witnessing is re-owning"), mkE("men", "Confrontation and mirroring surface disowned aspects in peer field"), mkE("step12", "Steps 4-5 moral inventory; amends as facing what was hidden"), mkE("gestalt", "'Be the part you're disowning' — polarities, empty chair, owning projections"), mkE("maha", "Most radical: awareness itself has no shadow because nothing is excluded"), mkE("dzog", "Rigpa includes everything — ultimate non-exclusion"), mkE("plant", "Ayahuasca especially can forcefully surface shadow material")],
-  par: [mkE("psychodyn", "Classical projection analysis; slow but genuine"), mkE("circ", "Real-time mirroring reveals blind spots"), mkE("grpther", "Group dynamics surface projections and disowned roles"), mkE("rc", "Discharge sometimes touches forbidden material; format limits depth"), mkE("biocore", "Muscular armoring holds forbidden impulses — releases can surface shadow"), mkE("drama", "Role-play as disowned parts; theatrical distance enables contact"), mkE("art", "Unconscious material surfaces through image"), mkE("fam", "Reveals disowned family roles and inherited shadow"), mkE("holo", "Intense states can crack open defended material"), mkE("adv", "Self-inquiry exposes identification, but can bypass relational shadow"), mkE("music", "Voice work can access forbidden expression"), mkE("rhythms", "Free movement reveals disowned impulses"), mkE("forum", "Intense confrontation surfaces shadow — manufactured context"), mkE("hypno", "Regression can surface repressed material; therapist-guided not self-discovered"), mkE("sweat", "Ordeal strips defenses, reveals what's underneath"), mkE("vision", "Solo wilderness confronts what's usually avoided"), mkE("ket", "Can surface shadow material — dissociative access, not re-owning")],
-  ineff: [mkI("talk", "Conversation reinforces the narrator — shadow stays hidden behind story"), mkI("cbt", "Works within conscious frame; cannot access what's excluded from awareness"), mkI("se", "Somatic tracking of what's present; not designed for what's actively excluded"), mkI("emdr", "Reprocesses memories, not split-off identity structures"), mkI("nfb", "No mechanism for accessing disowned material"), mkI("dbt", "Skill-building within existing self-concept"), mkI("act", "Acceptance of experience as-is; doesn't address active exclusion"), mkI("nlp", "Reframes within existing narrative; shadow remains projected"), mkI("nvc", "Communication framework — doesn't address what's disowned"), mkI("tre", "Releases tension but not split-off psychological material"), mkI("float", "Sensory reduction — no shadow mechanism"), mkI("vns", "Physiological only"), mkI("yoga", "Body practice — doesn't address what's actively excluded from self"), mkI("taichi", "Movement practice — no shadow mechanism"), mkI("massage", "Body relaxation — no shadow access")]
+  ex: [mkX("exkink", "Gold standard — makes conscious the hidden desire in what you claim to not want. The most direct technology for re-owning what was banished")],
+  eff: [mkE("jung", "Classical shadow tradition; shadow, anima/animus, individuation"), mkE("ifs", "Shadow work through exile access; exiled parts ARE the shadow, Self witnessing is re-owning"), mkE("men", "Confrontation and mirroring surface disowned aspects in peer field"), mkE("gestalt", "'Be the part you're disowning' — polarities, empty chair, owning projections"), mkE("maha", "Most radical: awareness itself has no shadow because nothing is excluded"), mkE("dzog", "Rigpa includes everything — ultimate non-exclusion")],
+  par: [mkE("psychodyn", "Classical projection analysis; slow but genuine"), mkE("grpther", "Group dynamics surface projections and disowned roles"), mkE("rc", "Discharge sometimes touches forbidden material; format limits depth"), mkE("drama", "Role-play as disowned parts; theatrical distance enables contact"), mkE("art", "Unconscious material surfaces through image"), mkE("fam", "Reveals disowned family roles and inherited shadow"), mkE("music", "Voice work can access forbidden expression"), mkE("forum", "Intense confrontation surfaces shadow — manufactured context"), mkE("hypno", "Regression can surface repressed material; therapist-guided not self-discovered"), mkE("sweat", "Ordeal strips defenses, reveals what's underneath"), mkE("vision", "Solo wilderness confronts what's usually avoided"), mkE("plant", "Ayahuasca can forcefully surface shadow material — but surfacing is not re-owning; requires integration"), mkE("step12", "Steps 4-5 moral inventory surfaces what's hidden; amends face it — but the framework's identity fusion can limit full re-owning"), mkE("talk", "Long-term therapeutic relationship can slowly surface disowned material through the narrator's blind spots — therapist sees what the story leaves out")],
+  ineff: [mkI("cbt", "Works within conscious frame; cannot access what's excluded from awareness"), mkI("se", "Somatic tracking of what's present; not designed for what's actively excluded"), mkI("emdr", "Reprocesses memories, not split-off identity structures"), mkI("nfb", "No mechanism for accessing disowned material"), mkI("dbt", "Skill-building within existing self-concept"), mkI("act", "Acceptance of experience as-is; doesn't address active exclusion"), mkI("nlp", "Reframes within existing narrative; shadow remains projected"), mkI("nvc", "Communication framework — doesn't address what's disowned"), mkI("tre", "Releases tension but not split-off psychological material"), mkI("float", "Sensory reduction — no shadow mechanism"), mkI("vns", "Physiological only"), mkI("yoga", "Body practice — doesn't address what's actively excluded from self"), mkI("taichi", "Movement practice — no shadow mechanism"), mkI("massage", "Body relaxation — no shadow access"), mkI("ket", "Dissociative access surfaces material but the dissociative mechanism prevents the re-owning that shadow work requires"), mkI("yoga_nidra", "Relaxation practice — no mechanism for accessing disowned material"), mkI("rhythms", "Free movement may surface impulses but lacks the confrontation and re-owning mechanism shadow work requires"), mkI("jhana", "Can reinforce avoidance of difficult material through pleasure-seeking — absorption as escape from what needs to be faced")]
 }, {
   id: "nondual",
   name: "Nondual View",
@@ -245,9 +275,11 @@ const DIMS = [{
   colorL: C.nduL,
   short: "The recognition that awareness is not identical to its contents",
   desc: "The experiential recognition that awareness is not identical to its contents — that the self-structure is a process rather than a fixed entity. According to Mahamudra teachings, this awareness is always already present: it is not created or achieved but unobscured through specific contemplative practice. It functions as a perspective accelerator across all cascade steps, reducing identity-level friction and allowing processing operations to cover more developmental distance per unit of nervous system capacity. Crucially, the cascade also potentiates the view: unresolved trauma, incomplete responses, unmetabolized affect, and unexamined shadow all generate egoic noise that occludes what is always already present. This mutual potentiation is a core architectural claim.",
-  eff: [mkE("maha", "Primary — pointing-out instruction in the Mahamudra lineage directly introduces awareness to itself"), mkE("dzog", "Trekchö: direct recognition of rigpa as always already present. The closest parallel to Mahamudra pointing-out"), mkE("adv", "Self-inquiry: 'Who am I?' traces the I-thought to its source, dissolving identification"), mkE("real", "Judith Blackstone's embodied nondual — unique in recognizing awareness within the body, not by transcending it")],
-  par: [mkE("zen", "Koans and shikantaza approach nondual recognition but through different mechanism — sudden insight rather than pointing-out"), mkE("cenpr", "Contemplative surrender can access nondual states but typically without the technology for stabilization"), mkE("sufi", "Fana (ego annihilation) touches nondual recognition through devotional intensity"), mkE("hrid", "Heart-centered practice can open nondual awareness but primarily through the devotional rather than recognition path"), mkE("vip", "Advanced insight stages (cessation, knowledge of arising and passing) can produce nondual glimpses — but the tradition lacks pointing-out technology for stabilizing them"), mkE("ifs", "'Self energy' gestures toward this awareness — practitioners can access some version of it. But without technology for recognizing and stabilizing nondual awareness, access tends to remain partial and unstable"), mkE("plant", "Can produce powerful nondual experiences — but chemically induced rather than recognized, so they don't stabilize without contemplative infrastructure"), mkE("yoga", "Samadhi states in deep practice. Access without recognition technology tends toward altered states rather than stable view"), mkE("kirtan", "Devotional dissolution of separate self — genuine but typically temporary and state-dependent"), mkE("kundy", "Kundalini awakening can crack open nondual awareness — but uncontrolled and often destabilizing")],
-  ineff: [mkI("talk", "Cognitive framework — cannot produce recognition of awareness"), mkI("cbt", "Works within the thought-stream, not the awareness observing it"), mkI("se", "Somatic tracking keeps attention on contents of awareness, not awareness itself"), mkI("ifs", "Without nondual training, 'Self' remains a concept or partial access, not stable recognition"), mkI("step12", "Surrender to higher power gestures toward it but lacks recognition technology"), mkI("emdr", "Reprocesses content of awareness, not recognition of awareness itself"), mkI("gestalt", "Present-moment contact with experience — not the same as awareness recognizing itself"), mkI("biocore", "Body-based work — operates on contents, not the perspective holding them"), mkI("nlp", "Cognitive repatterning within the egoic frame"), mkI("nfb", "Trains brain states, not recognition of awareness"), mkI("float", "Sensory reduction may increase subtle awareness but doesn't produce nondual recognition"), mkI("exkink", "Works within the identity structure, not beyond it"), mkI("nvc", "Communication framework"), mkI("tre", "Somatic release — no awareness-recognition mechanism"), mkI("dbt", "Skills within the egoic frame"), mkI("act", "Cognitive defusion approaches nondual insight but stops short of recognition")]
+  ex: [mkX("maha", "Gold standard — pointing-out instruction directly introduces awareness to itself. The most refined technology for nondual recognition and stabilization")],
+  eff: [mkE("dzog", "Trekchö: direct recognition of rigpa as always already present. The closest parallel to Mahamudra pointing-out"), mkE("adv", "Self-inquiry: 'Who am I?' traces the I-thought to its source, dissolving identification"), mkE("real", "Judith Blackstone's embodied nondual — unique in recognizing awareness within the body, not by transcending it"), mkE("zen", "Koans and shikantaza produce nondual recognition through sudden insight — different mechanism than pointing-out but arrives at the same recognition")],
+  par: [mkE("cenpr", "Contemplative surrender can access nondual states but typically without the technology for stabilization"), mkE("sufi", "Fana (ego annihilation) touches nondual recognition through devotional intensity"), mkE("hrid", "Heart-centered practice can open nondual awareness but primarily through the devotional rather than recognition path"), mkE("vip", "Advanced insight stages (cessation, knowledge of arising and passing) can produce nondual glimpses — but the tradition lacks pointing-out technology for stabilizing them"), mkE("ifs", "'Self energy' gestures toward this awareness — practitioners can access some version of it. But without technology for recognizing and stabilizing nondual awareness, access tends to remain partial and unstable"), mkE("kirtan", "Devotional dissolution of separate self — genuine but typically temporary and state-dependent"), mkE("kundy", "Kundalini awakening can crack open nondual awareness — but uncontrolled and often destabilizing"), mkE("exkink", "The practice of owning disowned desire can produce moments of non-separation between observer and observed — the wanting IS the awareness, not something awareness has. Partial and unsystematic, but genuine access point")],
+  sub: [mkS("jhana", "4th jhana and formless attainments approach nondual territory but through absorption rather than recognition — prepares the ground but doesn't include pointing-out instruction")],
+  ineff: [mkI("talk", "Cognitive framework — cannot produce recognition of awareness"), mkI("cbt", "Works within the thought-stream, not the awareness observing it"), mkI("se", "Somatic tracking keeps attention on contents of awareness, not awareness itself"), mkI("step12", "Surrender to higher power gestures toward it but lacks recognition technology"), mkI("emdr", "Reprocesses content of awareness, not recognition of awareness itself"), mkI("gestalt", "Present-moment contact with experience — not the same as awareness recognizing itself"), mkI("biocore", "Body-based work — operates on contents, not the perspective holding them"), mkI("nlp", "Cognitive repatterning within the egoic frame"), mkI("nfb", "Trains brain states, not recognition of awareness"), mkI("float", "Sensory reduction may increase subtle awareness but doesn't produce nondual recognition"), mkI("nvc", "Communication framework"), mkI("tre", "Somatic release — no awareness-recognition mechanism"), mkI("dbt", "Skills within the egoic frame"), mkI("act", "Cognitive defusion approaches nondual insight but stops short of recognition"), mkI("yoga", "Asana and pranayama build body awareness but do not produce recognition of awareness itself"), mkI("yoga_nidra", "Accesses liminal states but not recognition of awareness itself")]
 }];
 const CASCADE = ["capacity", "completion", "affect", "diff", "models", "identity"];
 const LOOPS = [{
@@ -529,7 +561,7 @@ const PLAIN = {
   "theory.spiral.1": "There's a natural direction — you need to feel safe enough before going deep, body work comes before deep emotional work, feeling before insight — but the areas are in constant conversation. Body releases bring up buried emotions, and feeling buried emotions can unlock body patterns. It's a conversation between the areas, not a staircase through them. Each time around, you go deeper as new material becomes available from a more stable foundation.",
   "theory.spiral.2": "These areas aren't really separate — a body sensation IS an emotion IS a belief IS a relationship pattern, all at once. It matters less where you start than how fully you show up.",
   "theory.modality.1": "Every healing approach is good at some things and limited at others. Body-based work is great at releasing physical tension but doesn't directly change your beliefs about relationships. Meditation develops deep awareness but can leave relationship patterns untouched. Talking helps you understand patterns but rarely releases a physical survival response.",
-  "theory.modality.2": "This tool maps over 50 different approaches across all ten areas, showing what each one is good at and what it misses. The goal isn't to try everything — it's to see clearly what your current practice covers and where the gaps are.",
+  "theory.modality.2": "This tool maps over 65 different approaches across all ten areas, showing what each one is good at and what it misses. The goal isn't to try everything — it's to see clearly what your current practice covers and where the gaps are.",
   "theory.shadow.1": "You can do real healing work in every other area while avoiding the things you've truly rejected about yourself. You can release safe body tensions while the forbidden impulses stay frozen. You can feel acceptable emotions while the scary ones stay locked away.",
   "theory.shadow.2": "Shadow work feels different from other healing — it's not about finishing something that got interrupted, but about welcoming back something that was kicked out. The anger the 'nice person' won't own. The vulnerability the 'strong one' has walled off. The desire the 'spiritual one' has risen above. Wholeness means nothing left out of who you are.",
   // Coherence
@@ -692,6 +724,11 @@ function assess(sel, activeConds) {
   const nduDim = DIMS.find(d => d.id === "nondual");
   let nduRaw = 0;
   if (nduDim) {
+    (nduDim.ex || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      nduRaw += 50 * Math.max(0, mult);
+    });
     (nduDim.eff || []).filter(m => sel.has(m.id)).forEach(m => {
       const t = condTier[m.id] || 0;
       const mult = hasConds && t ? tierMult[t] : 1;
@@ -701,6 +738,14 @@ function assess(sel, activeConds) {
       const t = condTier[m.id] || 0;
       const mult = hasConds && t ? tierMult[t] : 1;
       nduRaw += 10 * Math.max(0, mult);
+    });
+    (nduDim.semi || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      nduRaw += 18 * Math.max(0, mult);
+    });
+    (nduDim.sub || []).filter(m => sel.has(m.id)).forEach(m => {
+      nduRaw += 5;
     });
   }
   const nduScore = Math.min(100, Math.round(nduRaw));
@@ -712,7 +757,21 @@ function assess(sel, activeConds) {
     let rawScore = 0;
     const eMatch = [];
     const pMatch = [];
+    const sMatch = [];
     const harmMatch = [];
+
+    // Exemplary: best-in-class for this dimension (+50)
+    (dim.ex || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      if (mult < 0) {
+        rawScore += 50 * mult;
+        harmMatch.push(m.name);
+      } else {
+        rawScore += 50 * mult;
+        eMatch.push(m.name);
+      }
+    });
     (dim.eff || []).filter(m => sel.has(m.id)).forEach(m => {
       const t = condTier[m.id] || 0;
       const mult = hasConds && t ? tierMult[t] : 1;
@@ -735,6 +794,35 @@ function assess(sel, activeConds) {
         pMatch.push(m.name);
       }
     });
+    // Semi-effective: between partial and effective (+18)
+    (dim.semi || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      if (mult < 0) {
+        rawScore += 18 * mult;
+        harmMatch.push(m.name);
+      } else {
+        rawScore += 18 * mult;
+        pMatch.push(m.name);
+      }
+    });
+    // Sub-par: marginal contribution (+5)
+    (dim.sub || []).filter(m => sel.has(m.id)).forEach(m => {
+      const t = condTier[m.id] || 0;
+      const mult = hasConds && t ? tierMult[t] : 1;
+      if (mult < 0) {
+        rawScore += 5 * mult;
+        harmMatch.push(m.name);
+      } else {
+        rawScore += 5 * mult;
+        sMatch.push(m.name);
+      }
+    });
+    // Harm: actively undermines this dimension (-15)
+    (dim.harm || []).filter(m => sel.has(m.id)).forEach(m => {
+      rawScore -= 15;
+      harmMatch.push(m.name);
+    });
 
     // Apply dimension importance scaling + nondual potentiation
     // Nondual multiplier applies to all dimensions except nondual itself:
@@ -749,6 +837,7 @@ function assess(sel, activeConds) {
       level,
       eMatch,
       pMatch,
+      sMatch,
       harmMatch,
       dimImportance,
       potentiated
@@ -776,11 +865,11 @@ function assess(sel, activeConds) {
 /* ── Recommendation engine ── */
 // Modality categories for complementarity analysis
 const MOD_CATS = {
-  relational: ["step12", "men", "rc", "circ", "nvc", "eft", "grpther", "fam", "cuddle", "forum", "hoop"],
-  body: ["se", "sm", "biocore", "tre", "rolf", "feld", "cranio", "massage", "yoga", "kundy", "taichi", "martial", "ci", "rhythms", "acu"],
-  psyche: ["ifs", "gestalt", "talk", "cbt", "dbt", "act", "jung", "psychodyn", "istdp", "emdr", "hakomi", "emres", "nlp", "hypno", "art", "music", "drama"],
+  relational: ["step12", "men", "rc", "circ", "nvc", "eft", "grpther", "fam", "cuddle", "forum", "hoop", "post_retreat"],
+  body: ["se", "sm", "biocore", "tre", "rolf", "feld", "cranio", "massage", "yoga", "yoga_nidra", "kundy", "taichi", "martial", "ci", "rhythms", "acu"],
+  psyche: ["ifs", "gestalt", "talk", "cbt", "dbt", "act", "jung", "psychodyn", "istdp", "emdr", "hakomi", "emres", "nlp", "hypno", "art", "music", "drama", "exkink"],
   contemplative: ["maha", "vip", "zen", "dzog", "adv", "real", "cenpr", "sufi", "kirtan", "hrid"],
-  altered: ["plant", "holo", "wimhof", "ket", "float"],
+  altered: ["plant", "holo", "wimhof", "ket", "float", "jhana"],
   nature: ["nature", "vision", "sweat"],
   tech: ["nfb", "vns"]
 };
@@ -1047,10 +1136,16 @@ const MOD_INFO = {
     urlLabel: "Krishna Das"
   },
   yoga: {
-    desc: "Asana (postures), pranayama (breathwork), and meditation. Yoga Nidra is especially therapeutic — a guided state between waking and sleeping that accesses deep layers. Trauma-sensitive yoga adapts for PTSD.",
-    plain: "Body postures, breathing exercises, and meditation. Yoga Nidra (guided deep rest) is especially healing. Trauma-sensitive yoga is adapted to be safe for people with trauma.",
+    desc: "Asana (postures) and pranayama (breathwork). Builds interoceptive awareness, nervous system regulation, and energetic sensitivity. Trauma-sensitive yoga adapts for PTSD.",
+    plain: "Body postures and breathing exercises. Builds body awareness and calm. Trauma-sensitive yoga is adapted to be safe for people with trauma.",
     url: "https://www.yogaalliance.org",
     urlLabel: "Yoga Alliance"
+  },
+  yoga_nidra: {
+    desc: "Guided state between waking and sleeping — also known as yogic sleep. Uniquely effective for capacity building and accessing subtle energetic states. Not a movement practice; a systematic method of deep conscious relaxation that trains the nervous system to settle while awareness remains present.",
+    plain: "A guided deep rest practice where you stay aware while your body falls asleep. Uniquely effective for calming the nervous system and accessing subtle body awareness.",
+    url: "https://www.yoganidranetwork.org",
+    urlLabel: "Yoga Nidra Network"
   },
   kundy: {
     desc: "Yoga practice specifically targeting energetic awakening through the chakra system. Combines breathwork, movement, chanting, and meditation. Powerful but can destabilize — premature kundalini awakening is a real risk.",
@@ -1160,11 +1255,23 @@ const MOD_INFO = {
     url: "https://www.hooponopono.org",
     urlLabel: "Foundation of I (Ho'oponopono)"
   },
+  post_retreat: {
+    desc: "Ongoing community that forms after shared intensive experience — retreat, immersive, or training. The ambient relational field: not the peak moment but the ongoing unconditional structure where people are known over time. Distinct from the acute relational field of the retreat itself. Enables the deepest work through repeated disconfirming exposure in a context where it is safe to fully dissolve.",
+    plain: "The community that continues after a retreat or immersive experience. Being known by people over time, in an ongoing way, creates the kind of safety where the deepest changes can happen — not through peak experiences but through showing up again and again.",
+    url: "https://sleepawake.camp",
+    urlLabel: "SleepAwake Camp"
+  },
   float: {
     desc: "Sensory deprivation tanks — floating in body-temperature saltwater in darkness and silence. Reduces sensory input to let the nervous system reset to baseline. Builds subtle awareness.",
     plain: "Floating in a dark, quiet tank of warm saltwater. Removes all sensory input so your nervous system can deeply rest and reset.",
     url: "https://www.floatationlocations.com",
     urlLabel: "Float Tank Association"
+  },
+  jhana: {
+    desc: "Progressive meditative absorption states accessed through sustained concentration. Eight (or nine) distinct states ranging from rapturous pleasure through deep equanimity to cessation of consciousness. Trains the nervous system to settle organically through pleasure rather than effort. Strong capacity-builder and differentiator. Not a single technique but a progression: first jhana is ecstatic and energized, fourth jhana is radical stillness, formless jhanas dissolve ordinary perception. Risks include using absorption to bypass difficult emotional material and building identity around attainment.",
+    plain: "A series of deeply pleasurable and peaceful mental states reached through focused meditation. Trains your nervous system to calm itself through enjoyment rather than effort. Ranges from ecstatic bliss to profound stillness to states beyond ordinary perception. Can be learned by most people with proper instruction.",
+    url: "https://www.jhourney.io",
+    urlLabel: "Jhourney — Jhana Meditation"
   },
   vns: {
     desc: "Direct electrical or mechanical stimulation of the vagus nerve. Tones parasympathetic pathways. Emerging evidence for PTSD, depression, and anxiety. Works at the neurological level.",
@@ -1565,27 +1672,63 @@ function recommend(sel, assessment, activeConds) {
       reasons.push("⚠ Use caution with selected conditions");
     }
 
-    // 1. How many gap dimensions does this modality cover as effective?
+    // 1. How many gap/weak dimensions does this modality cover?
     gapDims.forEach(r => {
+      const isEx = (r.dim.ex || []).some(m => m.id === id);
       const isEff = (r.dim.eff || []).some(m => m.id === id);
+      const isSemi = (r.dim.semi || []).some(m => m.id === id);
       const isPar = (r.dim.par || []).some(m => m.id === id);
+      const isSub = (r.dim.sub || []).some(m => m.id === id);
+      const isHarm = (r.dim.harm || []).some(m => m.id === id);
       const dimBoost = condDimBoost[r.dim.id] ? 1 + condDimBoost[r.dim.id] * 0.25 : 1;
-      if (isEff) {
-        score += 30 * dimBoost;
-        gapsFilled.push(r.dim.name);
+      // Base contribution score
+      let contrib = 0;
+      if (isHarm) {
+        contrib = -10;
+        reasons.push("Undermines " + r.dim.name);
+      } else if (isEx) {
+        contrib = 50;
+      } else if (isEff) {
+        contrib = 28;
+      } else if (isSemi) {
+        contrib = 18;
       } else if (isPar) {
-        score += 10 * dimBoost;
-        gapsFilled.push(r.dim.name + " (partial)");
+        contrib = 10;
+      } else if (isSub) {
+        contrib = 5;
+      }
+      if (contrib > 0) {
+        // Would adding this push the dimension to Strong (score >= 56)?
+        const projected = r.score + contrib;
+        if (projected >= 56 && r.score < 56) {
+          score += 45 * dimBoost; // big bonus for reaching Strong
+          gapsFilled.push(r.dim.name + " → Strong");
+        } else {
+          score += Math.round(contrib * dimBoost);
+          gapsFilled.push(r.dim.name + (isPar ? " (partial)" : isSub ? " (marginal)" : ""));
+        }
+      } else if (contrib < 0) {
+        score += Math.round(contrib * dimBoost);
       }
     });
 
-    // 2. Does it boost moderate dimensions to strong?
+    // 2. Does it boost moderate dimensions toward or to strong?
     modDims.forEach(r => {
+      const isEx = (r.dim.ex || []).some(m => m.id === id);
       const isEff = (r.dim.eff || []).some(m => m.id === id);
+      const isSemi = (r.dim.semi || []).some(m => m.id === id);
+      const isPar = (r.dim.par || []).some(m => m.id === id);
       const dimBoost = condDimBoost[r.dim.id] ? 1 + condDimBoost[r.dim.id] * 0.2 : 1;
-      if (isEff) {
-        score += 12 * dimBoost;
-        modsBoosted.push(r.dim.name);
+      let contrib = isEx ? 50 : isEff ? 28 : isSemi ? 18 : isPar ? 10 : 0;
+      if (contrib > 0) {
+        const projected = r.score + contrib;
+        if (projected >= 56 && r.score < 56) {
+          score += 40 * dimBoost; // big bonus for reaching Strong from moderate
+          modsBoosted.push(r.dim.name + " → Strong");
+        } else {
+          score += Math.round(15 * dimBoost);
+          modsBoosted.push(r.dim.name);
+        }
       }
     });
 
@@ -1670,12 +1813,153 @@ function recommend(sel, assessment, activeConds) {
 
   // Group into tiers
   const primary = viable.filter(c => c.score >= 40).slice(0, 5);
-  const secondary = viable.filter(c => c.score >= 20 && c.score < 40).slice(0, 4);
+  const secondary = viable.filter(c => c.score >= 10 && c.score < 40).slice(0, 4);
+
+  // ── Upgrade recommendations ──
+  // Focus on dimensions not yet Strong. For each, find the most REDUNDANT contributor
+  // (the one whose removal costs the least across ALL dimensions because other selected
+  // modalities cover the same ground) and suggest replacing it with something stronger.
+  // e.g. if Zen and Mahamudra both cover Nondual+Diff+Identity, suggest swapping Zen
+  // for something that covers a gap — Mahamudra still holds the overlapping dimensions.
+  const tierVal = (dim, modId) => {
+    if ((dim.ex || []).some(m => m.id === modId)) return 50;
+    if ((dim.eff || []).some(m => m.id === modId)) return 28;
+    if ((dim.semi || []).some(m => m.id === modId)) return 18;
+    if ((dim.par || []).some(m => m.id === modId)) return 10;
+    if ((dim.sub || []).some(m => m.id === modId)) return 5;
+    if ((dim.harm || []).some(m => m.id === modId)) return -15;
+    return 0;
+  };
+  const tierName = v => v >= 50 ? "exemplary" : v >= 28 ? "effective" : v >= 18 ? "semi-effective" : v >= 10 ? "partial" : v >= 5 ? "sub-par" : v < 0 ? "harmful" : "none";
+
+  // Compute redundancy: for each selected modality, how replaceable is it?
+  // A modality is redundant on a dimension if removing it wouldn't drop the coverage level.
+  // A modality is IRREPLACEABLE if it's the sole or best contributor and no other selected mod matches.
+  const redundancy = {};
+  sel.forEach(modId => {
+    let redScore = 0;
+    DIMS.forEach(dim => {
+      const myVal = tierVal(dim, modId);
+      if (myVal <= 0) return;
+      // Best OTHER selected modality for this dimension
+      let bestOther = 0;
+      sel.forEach(otherId => {
+        if (otherId === modId) return;
+        const v = tierVal(dim, otherId);
+        if (v > bestOther) bestOther = v;
+      });
+      if (bestOther >= myVal) {
+        // Fully redundant here — another mod covers at same or higher tier
+        redScore += myVal;
+      } else if (bestOther > 0 && bestOther >= myVal * 0.6) {
+        // Partially redundant — another mod covers at a reasonable level
+        redScore += Math.floor(bestOther * 0.5);
+      }
+      // If bestOther is 0 or much lower, this contribution is unique — no redundancy credit
+    });
+    redundancy[modId] = redScore;
+  });
+  const upgrades = [];
+  results.forEach(r => {
+    if (r.level === "strong") return;
+    if (r.level === "none") return;
+    const dim = r.dim;
+
+    // Find user's modalities contributing to this dimension
+    const userContribs = [];
+    sel.forEach(modId => {
+      const v = tierVal(dim, modId);
+      if (v > 0) userContribs.push({
+        modId,
+        name: MODS[modId],
+        val: v,
+        red: redundancy[modId] || 0
+      });
+    });
+    if (userContribs.length === 0) return;
+
+    // Pick the best swap candidate: most redundant globally, but penalize
+    // swapping the strongest contributor to THIS dimension (we want to improve it,
+    // not lose our best coverage). Sort by: adjusted redundancy descending.
+    userContribs.sort((a, b) => {
+      // Penalize: if this mod is the strongest contributor to the target dim,
+      // reduce its effective redundancy so we don't swap it out
+      const maxVal = Math.max(...userContribs.map(c => c.val));
+      const aAdj = a.red - (a.val === maxVal && userContribs.filter(c => c.val === maxVal).length === 1 ? 200 : 0);
+      const bAdj = b.red - (b.val === maxVal && userContribs.filter(c => c.val === maxVal).length === 1 ? 200 : 0);
+      if (bAdj !== aAdj) return bAdj - aAdj;
+      return a.val - b.val;
+    });
+    const swapCandidate = userContribs[0];
+
+    // Find best unselected modality for this dimension that's stronger than any contributor
+    let bestNewVal = 0;
+    let bestNewMod = null;
+    const maxUserVal = Math.max(...userContribs.map(c => c.val));
+    MOD_KEYS.filter(k => !sel.has(k)).forEach(modId => {
+      const v = tierVal(dim, modId);
+      if (v > maxUserVal && v > bestNewVal) {
+        const t = condTier[modId] || 0;
+        if (t < 4) {
+          bestNewVal = v;
+          bestNewMod = modId;
+        }
+      }
+    });
+    if (bestNewMod) {
+      // Pick the swap candidate: which existing contributor has the most OVERLAP
+      // with the incoming modality? That's the one that becomes most redundant
+      // once the upgrade is added. This ensures we swap Zen when adding Mahamudra
+      // (because Mahamudra covers everything Zen does), not EK (which covers
+      // unique dimensions Mahamudra doesn't touch).
+      let bestSwap = null;
+      let bestOverlap = -1;
+      userContribs.forEach(c => {
+        let overlap = 0;
+        DIMS.forEach(d => {
+          const cVal = tierVal(d, c.modId);
+          const newVal = tierVal(d, bestNewMod);
+          if (cVal > 0 && newVal >= cVal) overlap += cVal; // incoming covers this at same or better
+        });
+        if (overlap > bestOverlap || overlap === bestOverlap && (!bestSwap || c.val < bestSwap.val)) {
+          bestOverlap = overlap;
+          bestSwap = c;
+        }
+      });
+      if (!bestSwap) bestSwap = userContribs[0]; // fallback
+
+      const improvement = bestNewVal - bestSwap.val;
+      const newScore = r.score + improvement;
+      const wouldReachStrong = newScore >= 56 && r.score < 56;
+      upgrades.push({
+        dimName: dim.name,
+        dimId: dim.id,
+        currentLevel: r.level,
+        currentScore: r.score,
+        replaceMod: bestSwap.name,
+        replaceModId: bestSwap.modId,
+        replaceTier: tierName(bestSwap.val),
+        upgradeMod: MODS[bestNewMod],
+        upgradeModId: bestNewMod,
+        upgradeTier: tierName(bestNewVal),
+        improvement,
+        newScore,
+        wouldReachStrong
+      });
+    }
+  });
+  // Prioritize: swaps that would reach Strong first, then by improvement size
+  upgrades.sort((a, b) => {
+    if (a.wouldReachStrong !== b.wouldReachStrong) return a.wouldReachStrong ? -1 : 1;
+    return b.improvement - a.improvement;
+  });
+  const topUpgrades = upgrades.slice(0, 4);
   return {
     primary,
     secondary,
     condNotes,
-    warnings
+    warnings,
+    upgrades: topUpgrades
   };
 }
 
@@ -1685,9 +1969,13 @@ function ModList({
   type
 }) {
   const dot = {
+    exemplary: "#4aea6a",
     effective: C.eff,
+    semi: "#5aaa7a",
     partial: C.par,
-    ineffective: C.ineff
+    sub: "#8a8a6a",
+    ineffective: C.ineff,
+    harmful: C.warn
   }[type];
   return /*#__PURE__*/React.createElement("div", null, items.map((m, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -1735,10 +2023,55 @@ function Detail({
     const t = st.toLowerCase();
     return arr.filter(m => m.name.toLowerCase().includes(t) || (m.role || m.reason || "").toLowerCase().includes(t));
   };
-  const e = filt(dim.eff),
+  const x_ = filt(dim.ex),
+    e = filt(dim.eff),
+    se = filt(dim.semi),
     p = filt(dim.par),
-    n = filt(dim.ineff);
+    s = filt(dim.sub),
+    n = filt(dim.ineff),
+    h = filt(dim.harm);
   const loops = LOOPS.filter(l => l.from === sel || l.to === sel);
+  const filters = [{
+    k: "all",
+    l: "All",
+    c: C.bdr,
+    count: null
+  }, ...(x_.length > 0 ? [{
+    k: "exemplary",
+    l: "Exemplary",
+    c: "#4aea6a",
+    count: x_.length
+  }] : []), {
+    k: "effective",
+    l: "Effective",
+    c: C.eff,
+    count: e.length
+  }, ...(se.length > 0 ? [{
+    k: "semi",
+    l: "Semi-effective",
+    c: "#5aaa7a",
+    count: se.length
+  }] : []), {
+    k: "partial",
+    l: "Partial",
+    c: C.par,
+    count: p.length
+  }, ...(s.length > 0 ? [{
+    k: "sub",
+    l: "Sub-par",
+    c: "#8a8a6a",
+    count: s.length
+  }] : []), {
+    k: "ineffective",
+    l: "Ineffective",
+    c: C.ineff,
+    count: n.length
+  }, ...(h.length > 0 ? [{
+    k: "harmful",
+    l: "Harmful",
+    c: C.warn,
+    count: h.length
+  }] : [])];
   return /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: "0.5rem",
@@ -1783,39 +2116,38 @@ function Detail({
       marginBottom: "1rem",
       flexWrap: "wrap"
     }
-  }, [{
-    k: "all",
-    l: "All",
-    c: C.bdr
-  }, {
-    k: "effective",
-    l: "Effective",
-    c: C.eff
-  }, {
-    k: "partial",
-    l: "Partial",
-    c: C.par
-  }, {
-    k: "ineffective",
-    l: "Ineffective",
-    c: C.ineff
-  }].map(x => /*#__PURE__*/React.createElement("button", {
-    key: x.k,
+  }, filters.map(f => /*#__PURE__*/React.createElement("button", {
+    key: f.k,
     onClick: ev => {
       ev.stopPropagation();
-      setMf(mf === x.k ? "all" : x.k);
+      setMf(mf === f.k ? "all" : f.k);
     },
     style: {
       padding: "0.35rem 0.75rem",
-      background: mf === x.k ? `${x.c}22` : "transparent",
-      color: mf === x.k ? C.txL : C.txM,
-      border: `1px solid ${mf === x.k ? x.c + "66" : "transparent"}`,
+      background: mf === f.k ? `${f.c}22` : "transparent",
+      color: mf === f.k ? C.txL : C.txM,
+      border: `1px solid ${mf === f.k ? f.c + "66" : "transparent"}`,
       borderRadius: 5,
       cursor: "pointer",
       fontFamily: "inherit",
       fontSize: "0.73rem"
     }
-  }, x.l, x.k !== "all" ? ` (${x.k === "effective" ? e.length : x.k === "partial" ? p.length : n.length})` : ""))), (mf === "all" || mf === "effective") && e.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, f.l, f.count !== null ? ` (${f.count})` : ""))), (mf === "all" || mf === "exemplary") && x_.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.7rem",
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+      color: "#4aea6a",
+      marginBottom: "0.4rem"
+    }
+  }, "\u2605 Exemplary"), /*#__PURE__*/React.createElement(ModList, {
+    items: x_,
+    type: "exemplary"
+  })), (mf === "all" || mf === "effective") && e.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: "1rem"
     }
@@ -1830,6 +2162,21 @@ function Detail({
   }, "\u25CF Effective"), /*#__PURE__*/React.createElement(ModList, {
     items: e,
     type: "effective"
+  })), (mf === "all" || mf === "semi") && se.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.7rem",
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+      color: "#5aaa7a",
+      marginBottom: "0.4rem"
+    }
+  }, "\u25D5 Semi-effective"), /*#__PURE__*/React.createElement(ModList, {
+    items: se,
+    type: "semi"
   })), (mf === "all" || mf === "partial") && p.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: "1rem"
@@ -1845,6 +2192,21 @@ function Detail({
   }, "\u25D0 Partially Effective"), /*#__PURE__*/React.createElement(ModList, {
     items: p,
     type: "partial"
+  })), (mf === "all" || mf === "sub") && s.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.7rem",
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+      color: "#8a8a6a",
+      marginBottom: "0.4rem"
+    }
+  }, "\u25D4 Sub-par"), /*#__PURE__*/React.createElement(ModList, {
+    items: s,
+    type: "sub"
   })), (mf === "all" || mf === "ineffective") && n.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       marginBottom: "1rem"
@@ -1860,6 +2222,21 @@ function Detail({
   }, "\u25CB Ineffective"), /*#__PURE__*/React.createElement(ModList, {
     items: n,
     type: "ineffective"
+  })), (mf === "all" || mf === "harmful") && h.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: "1rem"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.7rem",
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+      color: C.warn,
+      marginBottom: "0.4rem"
+    }
+  }, "\u26D4 Harmful"), /*#__PURE__*/React.createElement(ModList, {
+    items: h,
+    type: "harmful"
   })), !st && loops.length > 0 && /*#__PURE__*/React.createElement("div", {
     style: {
       borderTop: `1px solid ${C.bdr}`,
@@ -2075,6 +2452,12 @@ function HealingSpiralApp() {
     n.has(id) ? n.delete(id) : n.add(id);
     setMods(n);
   };
+  const swap = (removeId, addId) => {
+    const n = new Set(mods);
+    n.delete(removeId);
+    n.add(addId);
+    setMods(n);
+  };
   const pick = id => {
     setSel(sel === id ? null : id);
     setMf("all");
@@ -2232,6 +2615,7 @@ function HealingSpiralApp() {
         const matchParts = [];
         if (r.eMatch.length > 0) matchParts.push("● " + r.eMatch.join(", "));
         if (r.pMatch.length > 0) matchParts.push("◐ " + r.pMatch.join(", "));
+        if (r.sMatch.length > 0) matchParts.push("◔ " + r.sMatch.join(", "));
         if (r.harmMatch && r.harmMatch.length > 0) matchParts.push("⛔ " + r.harmMatch.join(", "));
         if (matchParts.length > 0) {
           const mLines = doc.splitTextToSize(matchParts.join("  ·  "), TW);
@@ -2310,6 +2694,26 @@ function HealingSpiralApp() {
           const rLines = doc.splitTextToSize(r.reasons.slice(0, 2).join(". "), TW - 6);
           doc.text(rLines, M + 4, y);
           y += rLines.length * 3.5 + 3;
+        });
+      }
+
+      // Upgrade recommendations
+      if (recs && recs.upgrades && recs.upgrades.length > 0) {
+        checkPage(12);
+        y += 4;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(140, 100, 160);
+        doc.text("UPGRADE OPPORTUNITIES", M, y);
+        y += 4;
+        recs.upgrades.forEach(u => {
+          checkPage(8);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.5);
+          doc.setTextColor(50, 50, 60);
+          const label = `↑ ${u.dimName} (${u.currentLevel}): ${u.replaceMod} (${u.replaceTier}) → ${u.upgradeMod} (${u.upgradeTier})${u.wouldReachStrong ? " — reaches Strong" : ""}`;
+          doc.text(label, M + 2, y);
+          y += 4;
         });
       }
     }
@@ -2447,7 +2851,7 @@ function HealingSpiralApp() {
       maxWidth: 640,
       margin: 0
     }
-  }, plain ? "Ten areas of healing. 50+ approaches. One spiral process." : "Ten dimensions. 50+ modalities. One spiral process.")))), /*#__PURE__*/React.createElement("div", {
+  }, plain ? "Ten areas of healing. 65+ approaches. One spiral process." : "Ten dimensions. 65+ modalities. One spiral process.")))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       gap: "0.25rem",
@@ -2684,7 +3088,7 @@ function HealingSpiralApp() {
         diff: "Past from present. Part from whole self. Feeling from story. Awareness from content. As affect metabolizes, you see: 'this is the child's grief, not my adult reality.' Without somatic and affect work first, differentiation becomes mere intellectual mapping.",
         models: "The nervous system runs predictions formed under duress: 'people leave,' 'my needs are too much.' These update only when the old prediction is active AND met with disconfirming experience AND you're differentiated enough to notice the mismatch. This is why insight alone doesn't heal — corrective relational experience is the mechanism.",
         identity: "As enough implicit models update, the identity they supported loses coherence. 'The wounded one,' 'the strong one,' 'the helper' — dissolving. Can't be forced; premature attempts produce spiritual bypass. Two levels: structural loosening (specific identities soften) and, more rarely, dissolution of the identity project itself (questions like 'am I enough?' stop being live questions rather than getting better answers).",
-        energetic: "More granular than muscular tension, more embodied than parts or meaning. Traditional systems map as meridians, chakras, nadis. This dimension operates somewhat independently — sometimes preceding, sometimes following, sometimes catalyzing the cascade. Requires soft, receptive attention. A note on epistemological honesty: eight dimensions of this framework have mechanisms that can be named. This one can only be described phenomenologically. It is included because the experience is real and clinically significant, not because it is as well understood as the others.",
+        energetic: "More granular than muscular tension, more embodied than parts or meaning. Traditional systems map as meridians, chakras, nadis. This dimension operates somewhat independently — sometimes preceding, sometimes following, sometimes catalyzing the cascade. Requires soft, receptive attention. A note on epistemological honesty: nine dimensions of this framework have mechanisms that can be named. This one can only be described phenomenologically. It is included because the experience is real and clinically significant, not because it is as well understood as the others.",
         shadow: "Other dimensions work with what's stuck. This dimension works with what's split off — actively excluded from self-experience. The mechanism isn't completion or metabolization but re-owning what was banished. Integrity as structural wholeness: nothing left out. At every level of the cascade, there's material that was forbidden rather than merely unfelt. Full integration requires going to exactly the places the system has organized itself to avoid.",
         nondual: "The experiential recognition that awareness is not identical to its contents — always already present, not created or achieved but unobscured. Functions as a perspective accelerator across all cascade steps, reducing identity-level friction. Crucially mutual: the cascade also potentiates the view by clearing the trauma, frozen affect, and shadow material that occlude it. Not meditation generically — most practices build useful capacities but do not produce this specific recognition. Requires 'pointing out' instruction from traditions like Mahamudra, Dzogchen, or Advaita. Not required, but progress becomes asymptotically slower without it."
       };
@@ -2763,7 +3167,7 @@ function HealingSpiralApp() {
         margin: 0,
         marginTop: "0.75rem"
       }
-    }, T("theory.modality.2", "This framework maps 50+ modalities across all ten dimensions, showing where each is effective, partial, or ineffective. The goal isn't collecting modalities — it's seeing clearly which dimensions your current practice covers and which it doesn't.")))
+    }, T("theory.modality.2", "This framework maps 65+ modalities across all ten dimensions, rating each from exemplary through effective, semi-effective, partial, and sub-par, to ineffective or harmful. The goal isn't collecting modalities — it's seeing clearly which dimensions your current practice covers and which it doesn't.")))
   }, {
     id: "trauma",
     title: plain ? "What Healing Actually Means" : "What Is Trauma?",
@@ -3666,7 +4070,7 @@ function HealingSpiralApp() {
       color: C.nduL,
       fontStyle: "italic"
     }
-  }, "\u2191 potentiated by nondual view"), (r.eMatch.length > 0 || r.pMatch.length > 0 || r.harmMatch.length > 0) && /*#__PURE__*/React.createElement("div", {
+  }, "\u2191 potentiated by nondual view"), (r.eMatch.length > 0 || r.pMatch.length > 0 || r.sMatch.length > 0 || r.harmMatch.length > 0) && /*#__PURE__*/React.createElement("div", {
     style: {
       marginTop: "0.25rem",
       fontSize: "0.72rem",
@@ -3676,11 +4080,15 @@ function HealingSpiralApp() {
     style: {
       color: "#7aba8a"
     }
-  }, "\u25CF ", r.eMatch.join(", ")), r.eMatch.length > 0 && r.pMatch.length > 0 && /*#__PURE__*/React.createElement("span", null, " \xB7 "), r.pMatch.length > 0 && /*#__PURE__*/React.createElement("span", {
+  }, "\u25CF ", r.eMatch.join(", ")), r.eMatch.length > 0 && (r.pMatch.length > 0 || r.sMatch.length > 0) && /*#__PURE__*/React.createElement("span", null, " \xB7 "), r.pMatch.length > 0 && /*#__PURE__*/React.createElement("span", {
     style: {
       color: "#c0b070"
     }
-  }, "\u25D0 ", r.pMatch.join(", ")), r.harmMatch.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, (r.eMatch.length > 0 || r.pMatch.length > 0) && /*#__PURE__*/React.createElement("span", null, " \xB7 "), /*#__PURE__*/React.createElement("span", {
+  }, "\u25D0 ", r.pMatch.join(", ")), r.pMatch.length > 0 && r.sMatch.length > 0 && /*#__PURE__*/React.createElement("span", null, " \xB7 "), r.sMatch.length > 0 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#8a8a6a"
+    }
+  }, "\u25D4 ", r.sMatch.join(", ")), r.harmMatch.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, (r.eMatch.length > 0 || r.pMatch.length > 0 || r.sMatch.length > 0) && /*#__PURE__*/React.createElement("span", null, " \xB7 "), /*#__PURE__*/React.createElement("span", {
     style: {
       color: C.warn
     }
@@ -3691,7 +4099,7 @@ function HealingSpiralApp() {
       color: C.ineffTx,
       fontStyle: "italic"
     }
-  }, plain ? "No coverage — consider: " : "No coverage — consider: ", (r.dim.eff || []).slice(0, 2).map(m => m.name).join(", "))))), (() => {
+  }, plain ? "No coverage — consider: " : "No coverage — consider: ", (r.dim.ex || []).concat(r.dim.eff || []).concat(r.dim.semi || []).slice(0, 2).map(m => m.name).join(", "))))), (() => {
     const nduResult = asmnt.results.find(r => r.dim.id === "nondual");
     if (!nduResult || nduResult.level !== "none") return null;
     const hasAsymptotic = asmnt.results.filter(r => r.dim.id !== "nondual" && r.level !== "none").length >= 5;
@@ -3717,7 +4125,7 @@ function HealingSpiralApp() {
         margin: 0
       }
     }, hasAsymptotic ? plain ? "You have good coverage across many areas — but none of your current practices develop nondual recognition. This may explain why progress feels asymptotically limited despite doing genuine work. The nondual view acts as a processing accelerator: it reduces the identity-level friction at every step, allowing the same work to cover more ground. Consider Mahamudra, Dzogchen, or Realization Process. A single retreat with a qualified teacher (like Pointing Out the Great Way) can shift the efficiency of everything else you're doing." : "Your program has broad cascade coverage but lacks nondual view support. This creates a characteristic pattern: genuine progress that becomes asymptotically limited as identity-level friction slows each processing step. The nondual view — awareness recognizing itself — reduces this friction across the entire cascade. Consider: Mahamudra (pointing-out instruction), Dzogchen (trekchö), Realization Process, or Advaita self-inquiry. A single Pointing Out the Great Way retreat can dramatically accelerate the spiral." : plain ? "None of your current practices specifically develop nondual recognition — awareness recognizing itself. This isn't required, but when stabilized, it acts as an accelerator across all the other areas. Consider adding a practice from the Mahamudra, Dzogchen, or Advaita traditions." : "No nondual view support in your current program. This dimension is not required for cascade progress, but functions as a perspective accelerator when present — reducing identity-level friction at every cascade step. Consider adding a pointing-out style practice."));
-  })(), recs && recs.primary && (recs.primary.length > 0 || recs.secondary.length > 0) && /*#__PURE__*/React.createElement("div", {
+  })(), recs && recs.primary && (recs.primary.length > 0 || recs.secondary.length > 0 || recs.upgrades && recs.upgrades.length > 0) && /*#__PURE__*/React.createElement("div", {
     style: {
       background: C.card,
       border: `1px solid ${C.accL}33`,
@@ -3983,7 +4391,92 @@ function HealingSpiralApp() {
       color: C.txM,
       marginTop: 2
     }
-  }, r.reasons.filter(r2 => r2.includes("⚠") || r2.includes("⛔")).slice(0, 1).join("") || "Review appropriateness for your conditions")))))), /*#__PURE__*/React.createElement("div", {
+  }, r.reasons.filter(r2 => r2.includes("⚠") || r2.includes("⛔")).slice(0, 1).join("") || "Review appropriateness for your conditions"))))), recs.upgrades && recs.upgrades.length > 0 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.72rem",
+      textTransform: "uppercase",
+      letterSpacing: "0.1em",
+      color: C.idnL,
+      marginBottom: "0.5rem",
+      marginTop: "1rem"
+    }
+  }, plain ? "Consider Switching" : "Upgrade Opportunities"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: "0.76rem",
+      color: C.txM,
+      margin: 0,
+      marginBottom: "0.75rem",
+      lineHeight: 1.5
+    }
+  }, plain ? "These swaps would strengthen your weaker areas." : "Swaps that would improve dimensions currently below Strong coverage."), recs.upgrades.map(u => /*#__PURE__*/React.createElement("div", {
+    key: u.dimId + u.upgradeModId,
+    style: {
+      padding: "0.6rem 0",
+      borderTop: `1px solid ${C.idn}18`,
+      display: "flex",
+      gap: "0.75rem",
+      alignItems: "flex-start"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: u.wouldReachStrong ? C.accL : C.idnL,
+      fontSize: "0.85rem",
+      flexShrink: 0,
+      marginTop: 1
+    }
+  }, "\u2191"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.85rem",
+      color: C.txL
+    }
+  }, u.upgradeMod), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.62rem",
+      color: C.idnL,
+      background: `${C.idn}18`,
+      padding: "1px 6px",
+      borderRadius: 8
+    }
+  }, u.upgradeTier), u.wouldReachStrong && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: "0.62rem",
+      color: C.accL,
+      background: `${C.acc}18`,
+      padding: "1px 6px",
+      borderRadius: 8
+    }
+  }, "\u2192 Strong")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: "0.76rem",
+      color: C.txM,
+      marginTop: 2,
+      lineHeight: 1.5
+    }
+  }, plain ? `Swap ${u.replaceMod} (${u.replaceTier}) → ${u.upgradeMod} (${u.upgradeTier}) to strengthen ${u.dimName}${u.wouldReachStrong ? " to full coverage" : ""}` : `${u.dimName} (${u.currentLevel}): replace ${u.replaceMod} (${u.replaceTier}) with ${u.upgradeMod} (${u.upgradeTier})${u.wouldReachStrong ? " — reaches Strong" : ""}`), /*#__PURE__*/React.createElement("button", {
+    onClick: () => swap(u.replaceModId, u.upgradeModId),
+    style: {
+      marginTop: "0.4rem",
+      fontSize: "0.76rem",
+      color: C.idnL,
+      background: `${C.idn}12`,
+      border: `1px solid ${C.idn}44`,
+      borderRadius: 6,
+      padding: "0.3rem 0.75rem",
+      cursor: "pointer",
+      fontFamily: "inherit"
+    }
+  }, "Swap: \u2212 ", u.replaceMod, " + ", u.upgradeMod)))))), /*#__PURE__*/React.createElement("div", {
     style: {
       background: C.card,
       border: `1px solid ${C.bdr}`,
@@ -4282,7 +4775,7 @@ function HealingSpiralApp() {
       color: C.txM,
       marginBottom: "0.75rem"
     }
-  }, plain ? "Click each area to explore details:" : "Click dimensions to explore details:"), renderDim("ground"), /*#__PURE__*/React.createElement(Line, null), CASCADE.map((id, i) => /*#__PURE__*/React.createElement("div", {
+  }, plain ? "Click each area to explore what it means and what practices address it:" : "Click dimensions to explore details — what each one means, what stuckness looks like, and which modalities address it:"), renderDim("ground"), /*#__PURE__*/React.createElement(Line, null), CASCADE.map((id, i) => /*#__PURE__*/React.createElement("div", {
     key: id
   }, renderDim(id, i), i < CASCADE.length - 1 && /*#__PURE__*/React.createElement(Arrow, null))), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4315,7 +4808,7 @@ function HealingSpiralApp() {
       color: C.txM,
       textAlign: "center"
     }
-  }, plain ? "Cross-Cutting Areas" : "Orthogonal Dimensions"), renderDim("energetic", 6, true), renderDim("shadow", 7, true)))), view === "cascade" && /*#__PURE__*/React.createElement(React.Fragment, null, renderDim("ground"), /*#__PURE__*/React.createElement(Line, null), CASCADE.map((id, i) => /*#__PURE__*/React.createElement("div", {
+  }, plain ? "Cross-Cutting Areas — weave through everything" : "Orthogonal Dimensions — run throughout, not stages"), renderDim("energetic", 6, true), renderDim("shadow", 7, true), renderDim("nondual", 8, true)))), view === "cascade" && /*#__PURE__*/React.createElement(React.Fragment, null, renderDim("ground"), /*#__PURE__*/React.createElement(Line, null), CASCADE.map((id, i) => /*#__PURE__*/React.createElement("div", {
     key: id
   }, renderDim(id, i), i < CASCADE.length - 1 && /*#__PURE__*/React.createElement(Arrow, null))), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4396,11 +4889,25 @@ function HealingSpiralApp() {
       // Find which dims this modality is effective/partial in
       const dimRoles = [];
       DIMS.forEach(d => {
-        if ((d.eff || []).some(m => m.id === id)) {
+        if ((d.ex || []).some(m => m.id === id)) {
+          const m = (d.ex || []).find(m => m.id === id);
+          dimRoles.push({
+            dim: d,
+            tier: "ex",
+            role: m.role
+          });
+        } else if ((d.eff || []).some(m => m.id === id)) {
           const m = (d.eff || []).find(m => m.id === id);
           dimRoles.push({
             dim: d,
             tier: "eff",
+            role: m.role
+          });
+        } else if ((d.semi || []).some(m => m.id === id)) {
+          const m = (d.semi || []).find(m => m.id === id);
+          dimRoles.push({
+            dim: d,
+            tier: "semi",
             role: m.role
           });
         } else if ((d.par || []).some(m => m.id === id)) {
@@ -4409,6 +4916,20 @@ function HealingSpiralApp() {
             dim: d,
             tier: "par",
             role: m.role
+          });
+        } else if ((d.sub || []).some(m => m.id === id)) {
+          const m = (d.sub || []).find(m => m.id === id);
+          dimRoles.push({
+            dim: d,
+            tier: "sub",
+            role: m.role
+          });
+        } else if ((d.harm || []).some(m => m.id === id)) {
+          const m = (d.harm || []).find(m => m.id === id);
+          dimRoles.push({
+            dim: d,
+            tier: "harm",
+            role: m.reason
           });
         }
       });
@@ -4496,10 +5017,10 @@ function HealingSpiralApp() {
         }
       }, /*#__PURE__*/React.createElement("span", {
         style: {
-          color: dr.tier === "eff" ? "#7aba8a" : "#c0b070",
+          color: dr.tier === "ex" ? "#4aea6a" : dr.tier === "eff" ? "#7aba8a" : dr.tier === "semi" ? "#5aaa7a" : dr.tier === "par" ? "#c0b070" : dr.tier === "sub" ? "#8a8a6a" : "#c45a5a",
           flexShrink: 0
         }
-      }, dr.tier === "eff" ? "●" : "◐"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("span", {
+      }, dr.tier === "ex" ? "★" : dr.tier === "eff" ? "●" : dr.tier === "semi" ? "◕" : dr.tier === "par" ? "◐" : dr.tier === "sub" ? "◔" : "⛔"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("span", {
         style: {
           color: dr.dim.colorL
         }
@@ -4953,6 +5474,15 @@ function HealingSpiralApp() {
     desc: "Leadership development grounded in radical responsibility, candor, and self-awareness. The 15 Commitments framework builds differentiation (above/below the line), emotional completion, and integrity. Develops the capacity to see stories as stories and to source security internally.",
     dims: ["diff", "ground", "affect", "models"],
     rec: "Raven, Katara, Eli",
+    deep: false
+  }, {
+    name: "Jhourney",
+    type: "Retreat",
+    format: "In person (various locations)",
+    url: "https://www.jhourney.io",
+    desc: "Week-long jhana meditation retreats designed to make meditative absorption states accessible to beginners. Teaches progressive jhana states from rapturous pleasure through deep equanimity to cessation. Powerful capacity-builder — trains the nervous system to settle through pleasure rather than effort. Also develops differentiation and touches energetic and identity dimensions.",
+    dims: ["capacity", "diff", "energetic", "identity"],
+    rec: "Eli",
     deep: false
   }, {
     name: "School of Tears",
@@ -5612,7 +6142,7 @@ function HealingSpiralApp() {
       gap: "0.75rem",
       flexWrap: "wrap"
     }
-  }, [["Ground", C.gnd], ["Body", C.som], ["Psyche", C.psy], ["Identity", C.idn], ["Subtle", C.eng], ["Shadow", C.shd]].map(([l, c]) => /*#__PURE__*/React.createElement("div", {
+  }, [["Ground", C.gnd], ["Body", C.som], ["Psyche", C.psy], ["Identity", C.idn], ["Subtle", C.eng], ["Shadow", C.shd], ["View", C.ndu]].map(([l, c]) => /*#__PURE__*/React.createElement("div", {
     key: l,
     style: {
       display: "flex",
